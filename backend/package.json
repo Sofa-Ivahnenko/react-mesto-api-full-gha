@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CadSergRF/express-mesto-gha.git"
+    "url": "git+https://github.com/Sofa-Ivahnenko/react-mesto-api-full-gha.git"
   },
   "author": "Sergey Evdokimov",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/CadSergRF/express-mesto-gha/issues"
+    "url": "https://github.com/Sofa-Ivahnenko/react-mesto-api-full-gha.git"
   },
-  "homepage": "https://github.com/CadSergRF/express-mesto-gha#readme",
+  "homepage": "https://github.com/Sofa-Ivahnenko/react-mesto-api-full-gha.git#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "celebrate": "^15.0.1",
