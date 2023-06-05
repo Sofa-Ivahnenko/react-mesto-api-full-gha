@@ -1,22 +1,20 @@
 const mongoose = require('mongoose');
-const { urlRegex } = require('../utils/regex');
+const validator = require('validator');
 
 const cardSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, 'Поле "name" должно быть заполнено'],
-      minlength: [2, 'Минимальная длина поля "name" -2'],
-      maxlength: [30, 'Максимальная длина поля "name" -30'],
+      required: [true, 'Поле "Имя" должно быть заполнено'],
+      minlength: [2, 'Символов в названии должно быть от 2 до 30'],
+      maxlength: [30, 'Символов в названии должно быть от 2 до 30'],
     },
     link: {
       type: String,
-      required: true,
+      required: [true, 'Поле "Ссылка" должно быть заполнено'],
       validate: {
-        validator(v) {
-          return urlRegex.test(v);
-        },
-        message: (props) => `${props.value} -- невалидная ссылка на картинку`,
+        validator: (url) => validator.isURL(url),
+        message: 'Не корректный URL',
       },
     },
     owner: {
@@ -24,14 +22,18 @@ const cardSchema = new mongoose.Schema(
       ref: 'user',
       required: true,
     },
-    likes: {
-      type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }],
+    likes: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'user',
       default: [],
-    },
+    }],
     createdAt: {
       type: Date,
       default: Date.now,
     },
+  },
+  {
+    versionKey: false,
   },
 );
 

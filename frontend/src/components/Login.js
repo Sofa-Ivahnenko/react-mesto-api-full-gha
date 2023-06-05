@@ -1,30 +1,61 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
-export default function Login({ onLogin }) {
-	const [password, setPassword] = useState('');
-	const [email, setEmail] = useState('');
+const Login = ({ onLogin, onLoading }) => {
 
-	const handlePasswordInput = event => {
-		setPassword(event.target.value);
-	};
+    const [values, setValues] = useState({});
 
-	const handleEmailInput = event => {
-		setEmail(event.target.value);
-	};
+    function handleChange(event) {
+        const { name, value } = event.target;
+        setValues((prev) => ({ ...prev, [name]: value }))
+    }
 
-	const handleSubmit = event => {
-		event.preventDefault();
-		onLogin(email, password);
-	};
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onLogin(values);
+    }
 
-	return (
-		<section className='auth'>
-			<h3 className='auth__title'>Вход</h3>
-			<form className='auth__form' onSubmit={handleSubmit}>
-				<input className='auth__input' type='email' placeholder='Email' value={email} onChange={handleEmailInput} required></input>
-				<input className='auth__input' type='password' placeholder='Пароль' value={password} onChange={handlePasswordInput} required></input>
-				<button className='auth__submit-button'>Войти</button>
-			</form>
-		</section>
-	);
-};
+    return (
+        <div className='auth root__container'>
+            <div className='auth__container'>
+                <form
+                    className='auth__form'
+                    onSubmit={handleSubmit}
+                >
+                    <h3 className='auth__form-title'>Вход</h3>
+                    <div className='auth__form-input-area'>
+                        <input
+                            value={values.email || ''}
+                            onChange={handleChange}
+                            className="auth__form-input"
+                            type="email"
+                            placeholder="Email"
+                            name="email"
+                            required
+                        />
+                        <span className="auth__form-input-error"></span>
+                        <input
+                            value={values.password || ''}
+                            onChange={handleChange}
+                            className="auth__form-input"
+                            type="password"
+                            placeholder="Пароль"
+                            name="password"
+                            required
+                        />
+                        <span className="auth__form-input-error"></span>
+                    </div>
+                    <button
+                        className="auth__form-btn"
+                        type="submit"
+                        aria-label="Логин"
+                    >
+                        {onLoading ? "Вход..." : "Войти"}
+                    </button>
+                </form>
+            </div>
+        </div>
+    )
+
+}
+
+export default Login

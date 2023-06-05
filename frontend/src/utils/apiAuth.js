@@ -1,39 +1,39 @@
-const checkResponse = (res) => {
-	if (res.ok) {
-		return res.json();
-	}
-	return Promise.reject(res.status);
+export const BASE_URL_AUTH = 'https://api.mesto-csrf.nomoredomains.monster';
+// export const BASE_URL_AUTH = 'http://localhost:3000';
+
+const _responceProcessing = (res) => (res.ok) ? res.json() : Promise.reject(`Ошибка в Api: ${res.status} ${res.statusText}`);
+
+function makeRequest(url, method, body, token) {
+  const headers = { "Content-Type": "application/json" };
+  const config = { method, headers, credentials: 'include' };
+  if (token !== undefined) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+  if (body !== undefined) {
+    config.body = JSON.stringify(body);
+  }
+  return fetch(`${BASE_URL_AUTH}${url}`, config).then((res) => {
+
+    return _responceProcessing(res);
+  });
 }
 
-const BASE_URL = 'https://auth.nomoreparties.co';
-
-const signUp = (email, password) => {
-	const requestUrl = BASE_URL + '/signup';
-	return fetch(requestUrl, {
-		method: 'POST',
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({ email, password }),
-	}).then(checkResponse);
+export function register({ email, password }) {
+  return makeRequest("/signup", "POST", { email, password });
 }
 
-const signIn = (email, password) => {
-	const requestUrl = BASE_URL + '/signin';
-	return fetch(requestUrl, {
-		method: 'POST',
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({ email, password }),
-	}).then(checkResponse);
+export function authorize({ password, email }) {
+  return makeRequest("/signin", "POST", { password, email });
 }
 
-const checkToken = (token) => {
-	const requestUrl = BASE_URL + '/users/me';
-	return fetch(requestUrl, {
-		method: 'GET',
-		headers: {
-			"Content-Type": "application/json",
-			"Authorization": `Bearer ${token}`
-		},
-	}).then(checkResponse);
+export function getUserToken(jwt) {
+  return makeRequest("/users/me", "GET", undefined, jwt);
 }
 
-export { signUp, signIn, checkToken };
+export function checkCookies() {
+  return makeRequest("/users/me", "GET", undefined);
+}
+
+export function logout() {
+  return makeRequest("/signout", "POST", undefined);
+}

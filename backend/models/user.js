@@ -1,67 +1,66 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
-const { urlRegex } = require('../utils/regex');
-const { AuthError } = require('../errors/index-errors');
+const AuthError = require('../errors/AuthError');
 
 const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      minlength: [2, 'Минимальная длина поля "name" -2'],
-      maxlength: [30, 'Максимальная длина поля "name" -30'],
+      minlength: [2, 'Символов в названии должно быть от 2 до 30'],
+      maxlength: [30, 'Символов в названии должно быть от 2 до 30'],
       default: 'Жак-Ив Кусто',
     },
     about: {
       type: String,
-      minlength: [2, 'Минимальная длина поля "about" -2'],
-      maxlength: [30, 'Максимальная длина поля "about" -30'],
+      minlength: [2, 'Символов в названии должно быть от 2 до 30'],
+      maxlength: [30, 'Символов в названии должно быть от 2 до 30'],
       default: 'Исследователь',
     },
     avatar: {
       type: String,
       default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
       validate: {
-        validator(v) {
-          return urlRegex.test(v);
-        },
-        message: (props) => `${props.value} -- невалидная ссылка на картинку`,
+        validator: (url) => validator.isURL(url),
+        message: 'Не корректный URL',
       },
     },
     email: {
       type: String,
-      minlength: [2, 'Минимальная длина поля "email" -2'],
-      required: true,
+      required: [true, 'Полу "email" долдно быть заполнено'],
       unique: true,
       validate: {
         validator: (email) => validator.isEmail(email),
-        message: 'Некорректный адрес почты',
+        message: 'Не корректный e-mail',
       },
     },
     password: {
       type: String,
-      required: true,
+      required: [true, 'Поле "Пароль" должно быть заполнено'],
       select: false,
     },
   },
+  {
+    versionKey: false,
+    statics: {
+      findUserByCredentials(email, password) {
+        return this.findOne({ email }).select('+password')
+          .then((user) => {
+            if (!user) {
+              throw new AuthError('Неправильные почта или пароль');
+            }
+            // Сравниваем пароли
+            return bcrypt.compare(password, user.password)
+              .then((matched) => {
+                if (!matched) {
+                  throw new AuthError('Неправильные почта или пароль');
+                }
+                return user;
+              });
+          });
+      },
+    },
+  },
 );
-
-// eslint-disable-next-line func-names
-userSchema.statics.findUserByCredentials = function (email, password) {
-  return this.findOne({ email }).select('+password')
-    .then((user) => {
-      if (!user) {
-        return Promise.reject(new AuthError('Неправильные почта или пароль'));
-      }
-
-      return bcrypt.compare(password, user.password)
-        .then((matched) => {
-          if (!matched) {
-            return Promise.reject(new AuthError('Неправильные почта или пароль'));
-          }
-          return user;
-        });
-    });
-};
 
 module.exports = mongoose.model('user', userSchema);

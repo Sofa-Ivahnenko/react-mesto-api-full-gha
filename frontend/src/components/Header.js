@@ -1,20 +1,31 @@
-// import React from "react";
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import logo from '../img/logo.svg';
 
-import logo from '../images/header/logo.svg';
-import { Link } from 'react-router-dom';
+const Header = ({userEmail, onSignOut}) => {
+  const location = useLocation();
 
-const Header = ({ title, route, email, onClick }) => {
-	return (
-		<header className="header">
-			<a href="#" className="header__logo">
-				<img src={logo} className="header__image" alt="Логотип" />
-			</a>
-			<div className='header__auth'>
-				<p className='header__text'>{email}</p>
-				<Link to={route} className='header__link' onClick={onClick}>{title}</Link>
-			</div>
-		</header>
-	)
-};
+  return (
+    <header className="header root__container">
+      <img className="logo header__logo" src={logo} alt="Логотип" />
+      {location.pathname === '/sign-in' && (
+        <Link to="/sign-up" className="header__link">
+          Регистрация
+        </Link>
+      )}
+      {location.pathname === '/sign-up' && (
+        <Link to="/sign-in" className="header__link">
+          Войти
+        </Link>
+      )}
+      {location.pathname === '/' && (
+        <nav className="header__nav">
+          <p className="header__email">{userEmail}</p>
+          <button className="header__sign-out" onClick={() => onSignOut()}>Выйти</button>
+        </nav>
+      )}
+    </header>
+  )
+}
 
-export default Header;
+export default Header

@@ -1,44 +1,48 @@
-import React from "react";
-import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import React, { useContext } from 'react'
+import { CurrentUserContext } from '../contexts/CurrentUserContext'
 
-function Card({card, onCardClick, onCardLike, onConfirmCardDelete}) {
 
-  const currentUser = React.useContext(CurrentUserContext);
+const Card = ({ cardData, onCardClick, onCardDelete, onCardLike }) => {
 
-	const isOwn = card.owner._id === currentUser._id;
-	const cardDeleteButtonClassName = (
-    `card__button-delet ${!isOwn && 'card__button-delet__hidden'}` 
-	);
+  const currentUser = useContext(CurrentUserContext);
+  const isOwn = cardData.owner._id === currentUser._id;
+  const isLiked = cardData.likes.some(i => i._id === currentUser._id);
 
-	const isLiked = card.likes.some(i => i._id === currentUser._id);
-	const cardLikeButtonClassName = (
-		`card__button ${isLiked && 'card__button-like'}`
-	);
+  function handleLikeClick() {
+    onCardLike(cardData)
+  }
 
-  function handleCardClick() {
-		onCardClick(card);
-	}
+  function handleDeleteClick() {
+    onCardDelete(cardData);
+  }
 
-	function handleLikeClick() {
-		onCardLike(card);
-	}
-
-	function handleConfirmClick() {
-		onConfirmCardDelete(card);
-	}
-
+  function handleClick() {
+    onCardClick(cardData);
+  }
 
   return (
-    <li className="card">
-        <img className="card__image" alt={card.name} src={card.link} onClick={handleCardClick} />
-        <div className="card__content">
-            <h2 className="card__title">{card.name}</h2>
-            <div className="card__likes">
-                <button className={cardLikeButtonClassName} onClick={handleLikeClick}  type="button"></button>
-                <span className="card__likes-counter">{card.likes.length}</span>
-            </div>
+    <li className="places__item">
+      <article className="place">
+        <img
+          className="place__image"
+          src={cardData.link}
+          alt={cardData.name}
+          onClick={handleClick}
+        />
+        {isOwn && <button type="button" aria-label="Кнопка удаления place" className="place__delete" onClick={handleDeleteClick} />}
+        <div className="place__info">
+          <h2 className="place__title">{cardData.name}</h2>
+          <div>
+            <button
+              type="button"
+              aria-label="Кнопка лайк"
+              className={`place__like ${isLiked && 'place__like_active'}`}
+              onClick={handleLikeClick}>
+            </button>
+            <p className="place__num-of-likes">{cardData.likes.length}</p>
+          </div>
         </div>
-        <button className={cardDeleteButtonClassName} onClick={handleConfirmClick} type="button"></button>
+      </article>
     </li>
   )
 }

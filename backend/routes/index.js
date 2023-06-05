@@ -1,20 +1,21 @@
-const router = require('express').Router();
+const allRoutes = require('express').Router();
 const auth = require('../middlewares/auth');
-const { signUp, signIn } = require('../middlewares/validations');
-const { createUser, login } = require('../controllers/users');
-const { NotFoundError } = require('../errors/index-errors');
 
-const userRoutes = require('./users');
-const cardRoutes = require('./cards');
+const usersRoutes = require('./users');
+const cardsRoutes = require('./cards');
+const signin = require('./signin');
+const signup = require('./signup');
+const signout = require('./signout');
+const notFoundRoutes = require('./notFound');
+const crashTest = require('./crashTest');
 
-router.post('/signup', signUp, createUser);
-router.post('/signin', signIn, login);
+allRoutes
+  .use('/crash-test', crashTest)
+  .use('/signin', signin)
+  .use('/signup', signup)
+  .use('/signout', signout)
+  .use('/users', auth, usersRoutes)
+  .use('/cards', auth, cardsRoutes)
+  .use('*', auth, notFoundRoutes);
 
-router.use('/', auth, userRoutes);
-router.use('/', auth, cardRoutes);
-
-router.use('/*', auth, () => {
-  throw new NotFoundError('Запрашиваемый ресурс не найден');
-});
-
-module.exports = router;
+module.exports = allRoutes;

@@ -1,24 +1,32 @@
-const router = require('express').Router();
+const userRoutes = require('express').Router();
 
 const {
-  userIdValidation,
-  updateUserValidation,
-  updateAvatarValidation,
-} = require('../middlewares/validations');
+  userIdValidate,
+  userInfoValidation,
+  userAvatarValidation,
+} = require('../middlewares/celebrateValidation');
 
 const {
-  getAllUsers,
-  getCurrentUser,
+  getUsers,
   getUserById,
-  updateProfile,
-  updateAvatar,
+  getUserInfo,
+  changeUserInfo,
+  changeUserAvatar,
 } = require('../controllers/users');
 
-router.get('/users', getAllUsers);
-router.get('/users/me', getCurrentUser);
-router.get('/users/:userId', userIdValidation, getUserById);
+// Получение данных всех пользователей
+userRoutes.get('/', getUsers);
 
-router.patch('/users/me', updateUserValidation, updateProfile);
-router.patch('/users/me/avatar', updateAvatarValidation, updateAvatar);
+// Получение информации о пользователе
+userRoutes.get('/me', getUserInfo);
 
-module.exports = router;
+// Поиск пользователя по Id
+userRoutes.get('/:userId', userIdValidate, getUserById);
+
+// Изменение "Имя" & "О себе"
+userRoutes.patch('/me', userInfoValidation, changeUserInfo);
+
+// Изменение аватара
+userRoutes.patch('/me/avatar', userAvatarValidation, changeUserAvatar);
+
+module.exports = userRoutes;

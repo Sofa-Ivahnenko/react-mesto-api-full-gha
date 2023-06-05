@@ -1,41 +1,42 @@
-import React from "react";
-import PopupWithForm from "./PopupWithForm";
+import React, { useRef, useEffect } from 'react';
+import PopupWithForm from './PopupWithForm';
 
-function EditAvatarPopup({ isOpen, onClose, onCloseEsc, onCloseOverlay, onUpdateAvatar, isLoading }) {
-	const ref = React.useRef();
+const EditAvatarPopup = ({ isOpen, onClose, onUpdateAvatar, onLoading }) => {
 
-	function handleSubmit(e) {
-		e.preventDefault();
+  const refEditAvatarLink = useRef();
 
-		onUpdateAvatar({
-			avatar: ref.current.value
-		});
-	}
+  useEffect(() => {
+    refEditAvatarLink.current.value = '';
+  }, [isOpen])
 
-	React.useEffect(() => {
-		ref.current.value = '';
-	}, [isOpen]);
+  function handleSubmit(e) {
+    e.preventDefault();
+    onUpdateAvatar({
+      avatar: refEditAvatarLink.current.value
+    });
+  }
 
-	return (
-		<PopupWithForm
-			isOpen={isOpen}
-			onClose={onClose}
-			onCloseEsc={onCloseEsc}
-			onCloseOverlay={onCloseOverlay}
-			onSubmit={handleSubmit}
-			isLoading={isLoading}
-			name='popupAvatar'
-			title='Обновить аватар'
-			submitButton='Обновить'
-			submitBtnLoading='Обновление...'
-			children={
-				<label className="popup__form">
-					<input id="avatar" ref={ref} name="avatar" className="popup__input popup__input_type_avatar" type="url" placeholder="Ссылка на аватар" required />
-					<span className="avatar-error popup__error"></span>
-				</label>
-			}
-		/>
-	)
+  return (
+    <PopupWithForm
+      name="editAvatar"
+      title="Обновить аватар"
+      btnSubmitText={onLoading ? "Сохранить" : "Сохранение..."}
+      isOpen={isOpen}
+      onClose={onClose}
+      onSubmit={handleSubmit}
+    >
+      <input
+        ref={refEditAvatarLink}
+        className="popup__input popup__input_place_link"
+        type="URL"
+        placeholder="Ссылка на картинку"
+        name="link"
+        required
+      />
+      <span className="popup__input-error link-error"></span>
+
+    </PopupWithForm>
+  )
 }
 
-export default EditAvatarPopup;
+export default EditAvatarPopup
