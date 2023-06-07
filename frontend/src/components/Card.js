@@ -1,46 +1,56 @@
-import React from "react";
-import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import { useContext } from "react";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function Card({card, onCardClick, onCardLike, onConfirmCardDelete}) {
+function Card({ card, onCardClick, onCardLike, onCardDelete }) {
+  function handleClick() {
+    onCardClick(card);
+  }
 
-  const currentUser = React.useContext(CurrentUserContext);
+  function handleLikeClick () {
+    onCardLike(card);
+  }
 
-	const isOwn = card.owner._id === currentUser._id;
-	const cardDeleteButtonClassName = (
-    `card__button-delet ${!isOwn && 'card__button-delet__hidden'}` 
-	);
+  function handDeleteClick () {
+    onCardDelete(card);
+  }
 
-	const isLiked = card.likes.some(i => i._id === currentUser._id);
-	const cardLikeButtonClassName = (
-		`card__button ${isLiked && 'card__button-like'}`
-	);
+  // Импортировали контекст и подписываемся на него
+  const currentUser = useContext(CurrentUserContext);
+  // Определяем, являемся ли мы владельцем текущей карточки используя поле контекста
+  const isOwn = card.owner === currentUser._id;
 
-  function handleCardClick() {
-		onCardClick(card);
-	}
+  // Определяем, есть ли у карточки лайк, поставленный текущим пользователем
+  // Используем поле контекста в коллбеке метода
+  const isLiked = card.likes.some(id => id === currentUser._id);
+  // Создаём переменную, которую после зададим в `className` для кнопки лайка
+  // Активный класс задастся только если изЛайкд вернет тру
+  const cardLikeButtonClassName = ( 
+  `element__like ${isLiked && 'element__like_active'}` 
+  );; 
 
-	function handleLikeClick() {
-		onCardLike(card);
-	}
-
-	function handleConfirmClick() {
-		onConfirmCardDelete(card);
-	}
-
-
+  // В разметке используем условный рендеринг:
+  // Иконка удаления покажется только если значение изОвн равно тру
   return (
-    <li className="card">
-        <img className="card__image" alt={card.name} src={card.link} onClick={handleCardClick} />
-        <div className="card__content">
-            <h2 className="card__title">{card.name}</h2>
-            <div className="card__likes">
-                <button className={cardLikeButtonClassName} onClick={handleLikeClick}  type="button"></button>
-                <span className="card__likes-counter">{card.likes.length}</span>
-            </div>
-        </div>
-        <button className={cardDeleteButtonClassName} onClick={handleConfirmClick} type="button"></button>
-    </li>
-  )
+    <article className="element">
+      <img className="element__photo" src={card.link} alt={card.name} onClick={handleClick} />
+      <div className="element__container">
+        <h2 className="element__title">{card.name}</h2>
+        <button
+          className={cardLikeButtonClassName}
+          type="button"
+          aria-label="Поставить лайк"
+          onClick={handleLikeClick}>
+        </button>
+        {isOwn && <button
+          className="element__trash"
+          type="button"
+          aria-label="Удалить место"
+          onClick={handDeleteClick}>
+        </button>}
+      </div>
+      <p className="element__counter">{card.likes.length}</p>
+    </article>
+  );
 }
 
-export default Card
+export default Card;

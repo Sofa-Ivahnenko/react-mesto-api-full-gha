@@ -1,60 +1,74 @@
-import React from "react";
-import PopupWithForm from './PopupWithForm';
+import { useState, useEffect } from "react";
+import PopupWithForm from "./PopupWithForm";
 
-function AddPlacePopup({ isOpen, onClose, onCloseEsc, onCloseOverlay, onAddPlace, isLoading }) {
-	const [title, setTitle] = React.useState('');
-	const [link, setLink] = React.useState('');
+function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
+  // Используем управляемые компоненты
+  const [name, setName] = useState("");
+  const [link, setLink] = useState("");
 
-	React.useEffect(() => {
-		if (isOpen) {
-			setTitle('');
-			setLink('');
-		}
-	}, [isOpen])
+  // В управляемых компонентах будут исползованы пустые строки
+  // Стейт-переменные будут обновляться при изменении изОпен (второй аргумент)
+  // Реализация очищения инпутов при открытии формы
+  useEffect(() => {
+    if (isOpen) {
+      setName('')
+      setLink('')
+    }
+  }, [isOpen])
 
-	function handleTitleChange(event) {
-		setTitle(event.target.value);
-	}
+  // Обработчики изменений в инпутах, обновляющие стейт
+  function handleChangeName (evt) {
+    setName(evt.target.value);
+  }
+  function handleChangeLink (evt) {
+    setLink(evt.target.value);
+  }
 
-	function handleLinkChange(event) {
-		setLink(event.target.value);
-	}
+  // Обработчик сабмита в котором мы
+  function handleSubmit (evt) {
+    // Запрещаем браузеру переходить по адресу формы
+    evt.preventDefault();
 
-	function handleSubmit(e) {
-		e.preventDefault();
+    // В аргумент внешней функции обработчика передаем управляемые стейт-переменные
+    onAddPlace({ name, link });
+  }
 
-		onAddPlace({
-			name: title,
-			link: link
-		});
-	}
-
-	return (
-		<PopupWithForm
-			isOpen={isOpen}
-			onClose={onClose}
-			onCloseEsc={onCloseEsc}
-			onCloseOverlay={onCloseOverlay}
-			onSubmit={handleSubmit}
-			isLoading={isLoading}
-			name='popupCard'
-			title='Новое место'
-			submitButton='Добавить'
-			submitBtnLoading='Добавление...'
-			children={
-				<>
-					<label className="popup__form">
-						<input id="name" name="name" className="popup__input popup__input_type_card-name" value={title || ''} onChange={handleTitleChange} type="text" placeholder="Название" minLength="2" maxLength="30" required />
-						<span id="text-error" className="name-error popup__error"></span>
-					</label>
-					<label className="popup__form">
-						<input id="link" name="link" className="popup__input popup__input_type_link" value={link || ''} onChange={handleLinkChange} type="url" placeholder="Ссылка на картинку" required />
-						<span id="url-error" className="link-error popup__error"></span>
-					</label>
-				</>
-			}
-		/>
-	)
+  return (
+    <PopupWithForm
+      isOpen={isOpen}
+      onClose={onClose}
+      onSubmit={handleSubmit}
+      type="add"
+      title="Новое место"
+      name="add-mesto"
+      buttonText="Создать"
+    >
+      <input
+        type="text"
+        id="name-card"
+        className="popup__input popup__input_type_mesto-title"
+        name="name"
+        placeholder="Название"
+        required
+        minLength={2}
+        maxLength={30}
+        value={name || ''}
+        onChange={handleChangeName}
+      />
+      <span id="name-card-error" className="popup__error popup__error_visible"></span>
+      <input
+        type="url"
+        id="link"
+        className="popup__input popup__input_type_mesto-link"
+        name="link"
+        placeholder="Ссылка на картинку"
+        required
+        value={link || ''}
+        onChange={handleChangeLink}
+      />
+      <span id="link-error" className="popup__error popup__error_visible"></span>
+    </PopupWithForm>
+  );
 }
 
 export default AddPlacePopup;
