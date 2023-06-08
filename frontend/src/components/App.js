@@ -163,7 +163,7 @@ function App() {
       .then(() => {
         setTitleTooltip("Вы успешно зарегистрировались!"); // Обновили стейт тайтлТултип
         setIconTooltip(resolve); // Обновили стейт иконки
-        navigate("/sign-in"); // Перенаправляем в окно авторизации
+        navigate("/signin"); // Перенаправляем в окно авторизации
       })
       .catch((err) => {
         console.log(err);
@@ -218,7 +218,7 @@ function App() {
   const signOut = () => {
     setIsLogged(false);
     setUserEmail(null); // Обновляем стейт почты
-    navigate("/sign-in");
+    navigate("/signin");
     localStorage.removeItem("jwt");
   };
 
@@ -233,19 +233,19 @@ function App() {
         <div className="page">
           <Routes>
             <Route
-              path="/sign-up"
+              path="/signup"
               element={
                 <>
-                  <Header route="/sign-in" text="Войти" />
+                  <Header route="/signin" text="Войти" />
                   <Register onSubmit={handleRegisterSubmit} />
                 </>
               }
             />
             <Route
-              path="/sign-in"
+              path="/signin"
               element={
                 <>
-                  <Header route="/sign-up" text="Регистрация" />
+                  <Header route="/signup" text="Регистрация" />
                   <Login onSubmit={handleLoginSubmit} />
                 </>
               }
@@ -271,7 +271,7 @@ function App() {
                 </>
               }
             />
-            <Route path="*" element={<Navigate to={isLogged ? "/" : "/sign-in"} />} />
+            <Route path="*" element={<Navigate to={isLogged ? "/" : "/signin"} />} />
           </Routes>
           <ImagePopup card={selectedCard} onClose={closeAllPopups} />
           <EditProfilePopup

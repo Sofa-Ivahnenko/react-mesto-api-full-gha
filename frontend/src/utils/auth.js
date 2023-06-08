@@ -10,7 +10,7 @@ function checkResponse(res) {
 // Запрос для отправки данных на сервере
 // При попытке авторизоваться (для компонента Логин)
 export function authorization(email, password) {
-  return fetch(`${BASE_URL}/sign-in`, {
+  return fetch(`${BASE_URL}/signin`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -22,7 +22,7 @@ export function authorization(email, password) {
 // Запрос для отправки данных на сервере
 // При попытке зарегестрироваться (для компонента Регистер)
 export function registration(email, password) {
-  return fetch(`${BASE_URL}/sign-up`, {
+  return fetch(`${BASE_URL}/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
