@@ -1,4 +1,4 @@
-export const BASE_URL = "https://api.websofa.mesto.nomoredomains.rock";
+export const BASE_URL = 'https://api.websofa.mesto.nomoredomains.rock';
 
 function checkResponse(res) {
   if (res.ok) {
