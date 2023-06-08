@@ -6,7 +6,7 @@ const urlValidation = (url) => {
   if (isUrl(url)) {
     return url;
   }
-  throw new BadRequestError('Incorrect URL');
+  throw new BadRequestError('Неверный URL');
 };
 
 const idValidation = (id) => {
@@ -14,7 +14,7 @@ const idValidation = (id) => {
   if (regex.test(id)) {
     return id;
   }
-  throw new BadRequestError('Incorrect id');
+  throw new BadRequestError('Неверный id');
 };
 
 module.exports.createUserValidation = celebrate({

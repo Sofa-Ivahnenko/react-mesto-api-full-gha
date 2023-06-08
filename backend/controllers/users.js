@@ -5,7 +5,7 @@ module.exports.getUser = (req, res, next) => {
   userSchema.findById(req.user._id)
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('User cannot be found');
+        throw new NotFoundError('Пользователь не найден');
       } else {
         res.send(user);
       }
@@ -24,7 +24,7 @@ module.exports.getUserById = (req, res, next) => {
   userSchema.findById(userId)
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('User cannot be found');
+        throw new NotFoundError('Пользователь не найден');
       } else {
         res.send(user);
       }
@@ -40,7 +40,7 @@ module.exports.updateProfile = (req, res, next) => {
   })
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('User cannot be found');
+        throw new NotFoundError('Пользователь не найден');
       } else {
         res.send(user);
       }
@@ -56,7 +56,7 @@ module.exports.updateAvatar = (req, res, next) => {
   })
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('User cannot be found');
+        throw new NotFoundError('Пользователь не найден');
       } else {
         res.send(user);
       }

@@ -17,7 +17,7 @@ module.exports.createCard = (req, res, next) => {
     .then((card) => res.status(201).send(card))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError('Invalid data'));
+        next(new BadRequestError('Неверные данные'));
       } else {
         next(err);
       }
@@ -29,11 +29,11 @@ module.exports.deleteCardById = (req, res, next) => {
   cardSchema.findById(cardId)
     .then((card) => {
       if (!card) {
-        throw new NotFoundError('Not found');
+        throw new NotFoundError('Не найден');
       } if (!card.owner.equals(req.user._id)) {
-        return next(new ForbiddenError('Card cannot be deleted'));
+        return next(new ForbiddenError('Карточка не может быть удалена'));
       }
-      return card.deleteOne().then(() => res.send({ message: 'Card was deleted' }));
+      return card.deleteOne().then(() => res.send({ message: 'Карточка удалена' }));
     })
     .catch(next);
 };
@@ -47,13 +47,13 @@ module.exports.addLike = (req, res, next) => {
     )
     .then((card) => {
       if (!card) {
-        throw new NotFoundError('Not found');
+        throw new NotFoundError('Не найден');
       }
       return res.send(card);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        return next(new BadRequestError('Invalid data'));
+        return next(new BadRequestError('Неверные данные'));
       }
       return next(err);
     });
@@ -68,13 +68,13 @@ module.exports.deleteLike = (req, res, next) => {
     )
     .then((card) => {
       if (!card) {
-        throw new NotFoundError('Not found');
+        throw new NotFoundError('Не найден');
       }
       return res.send(card);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        return next(new BadRequestError('Invalid data'));
+        return next(new BadRequestError('Неверные данные'));
       }
       return next(err);
     });

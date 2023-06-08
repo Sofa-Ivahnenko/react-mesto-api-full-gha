@@ -9,13 +9,13 @@ module.exports = (req, res, next) => {
   const { authorization } = req.headers;
   let payload;
   if (!authorization || !authorization.startsWith('Bearer ')) {
-    return next(new UnauthorizedError('You need to log in'));
+    return next(new UnauthorizedError('Необходима авторизация'));
   }
   const token = authorization.replace('Bearer ', '');
   try {
     payload = jwt.verify(token, NODE_ENV === NODE_PRODUCTION ? JWT_SECRET : DEV_SECRET);
   } catch (err) {
-    return next(UnauthorizedError('You need to log in'));
+    return next(UnauthorizedError('Необходима авторизация'));
   }
   req.user = payload;
   return next();

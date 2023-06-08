@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DayensCode/express-mesto-gha.git"
+    "url": "git+https://github.com/Sofa-Ivahnenko/express-mesto-gha.git"
   },
   "keywords": [],
   "author": "Diana Nazarova",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/DayensCode/express-mesto-gha/issues"
+    "url": "https://github.com/Sofa-Ivahnenko/express-mesto-gha/issues"
   },
-  "homepage": "https://github.com/DayensCode/express-mesto-gha#readme",
+  "homepage": "https://github.com/Sofa-Ivahnenko/express-mesto-gha#readme",
   "devDependencies": {
     "eslint": "^8.39.0",
     "eslint-config-airbnb-base": "^15.0.0",
