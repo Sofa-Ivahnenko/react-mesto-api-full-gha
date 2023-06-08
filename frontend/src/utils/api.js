@@ -124,7 +124,7 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: 'https://api.websofa.mesto.nomoredomains.rock',
+  baseUrl: 'https://api.websofa.mesto.nomoredomains.rocks',
 });
 
 export default api;
