@@ -1,0 +1,18 @@
+.login__input {
+	width: 358px;
+	margin: 0 0 30px 0;
+	border: none;
+	background: none;
+	color: white;
+	border-bottom: 1px solid rgba(204, 204, 204, 1);
+}
+
+.login__input:focus {
+	outline: none;
+}
+
+@media screen and (max-width: 359px) {
+	.login__input {
+		width: 320px;
+	}
+	}
