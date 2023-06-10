@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
-export const currentUser = {};
+//создаем объект контекста и экспортируем его
 export const CurrentUserContext = React.createContext();

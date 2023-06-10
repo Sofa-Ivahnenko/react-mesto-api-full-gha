@@ -1,32 +1,56 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
-export default function Register({ onRegister }) {
-	const [password, setPassword] = useState('');
-	const [email, setEmail] = useState('');
+function Register(props) {
+  // управляемые стейт-переменные
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-	const handlePasswordInput = event => {
-		setPassword(event.target.value);
-	};
+  // По сабмиту вызывается внешняя функция,
+  // Которая передается через пропсы,
+  // Здесь мы передаем внешней функции управляемые стейт-переменные в качестве аргументов
+  function handleSubmit(evt) {
+    evt.preventDefault();
+    props.onSubmit(email, password);
+  }
 
-	const handleEmailInput = event => {
-		setEmail(event.target.value);
-	};
+  function handleEmailChange(evt) {
+    setEmail(evt.target.value);
+  }
 
-	const handleSubmit = event => {
-		event.preventDefault();
-		onRegister(email, password);
-	};
+  function handlePasswordChange(evt) {
+    setPassword(evt.target.value);
+  }
 
-	return (
-		<section className='auth'>
-			<h3 className='auth__title'>Регистрация</h3>
-			<form className='auth__form' onSubmit={handleSubmit}>
-				<input className='auth__input' type='email' placeholder='Email' value={email} onChange={handleEmailInput} required></input>
-				<input className='auth__input' type='password' placeholder='Пароль' value={password} onChange={handlePasswordInput} required></input>
-				<button className='auth__submit-button '>Зарегистрироваться</button>
-			</form>
-			<p className='auth__btn-caption'>Уже зарегистрированы? <Link to="/signin" className='auth__link'>Войти</Link></p>
-		</section>
-	);
-};
+  // Навесила обработчик онСабмит на саму форму
+  return (
+    <div className="auth">
+      <h2 className="auth__title">Регистрация</h2>
+      <form className="auth__form" onSubmit={handleSubmit}>
+        <input
+          className="auth__input"
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={handleEmailChange}
+          required />
+        <input
+          className="auth__input"
+          type="password"
+          placeholder="Пароль"
+          value={password}
+          onChange={handlePasswordChange}
+          required
+        />
+        <button className="auth__submit-button" type="submit">
+          Зарегестрироваться
+        </button>
+      </form>
+      <p className="auth__text">
+        Уже зарегестрированы?<Link to="/sign-in" className="auth__link">Войти</Link>
+      </p>
+    </div>
+  );
+}
+
+export default Register;

@@ -1,20 +1,12 @@
 const router = require('express').Router();
-const auth = require('../middlewares/auth');
-const { signUp, signIn } = require('../middlewares/validations');
-const { createUser, login } = require('../controllers/users');
-const { NotFoundError } = require('../errors/index-errors');
+const usersRouter = require('./users');
+const cardsRouter = require('./cards');
+const NotFoundError = require('../errors/not-found-error');
 
-const userRoutes = require('./users');
-const cardRoutes = require('./cards');
-
-router.post('/signup', signUp, createUser);
-router.post('/signin', signIn, login);
-
-router.use('/', auth, userRoutes);
-router.use('/', auth, cardRoutes);
-
-router.use('/*', auth, () => {
-  throw new NotFoundError('Запрашиваемый ресурс не найден');
+router.use('/users', usersRouter);
+router.use('/cards', cardsRouter);
+router.use('/*', (req, res, next) => {
+  next(new NotFoundError('404: Not Found'));
 });
 
 module.exports = router;

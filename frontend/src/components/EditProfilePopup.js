@@ -1,62 +1,82 @@
-import React from "react";
+import { useState, useEffect, useContext } from "react";
 import PopupWithForm from "./PopupWithForm";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function EditProfilePopup({ isOpen, onClose, onCloseEsc, onCloseOverlay, onUpdateUser, isLoading }) {
-	const [user, setName] = React.useState('');
-	const [job, setDescription] = React.useState('');
-	const currentUser = React.useContext(CurrentUserContext);
+function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
+  // Стейт-переменные управляемые тк привязаны к вэлью инпутов
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
 
-	React.useEffect(() => {
-		if (isOpen) {
-			setName(currentUser.name);
-			setDescription(currentUser.about);
-		}
-	}, [currentUser, isOpen]);
+  // Обработчики изменений в инпутах, обновляющие стейт
+  const handleChangeName = (evt) => {
+    setName(evt.target.value);
+  };
+  const handleChangeDescription = (evt) => {
+    setDescription(evt.target.value);
+  };
 
-	function handleNameChange(event) {
-		setName(event.target.value);
-	}
+  // Обработчик сабмита в котором мы
+  const handleSubmit = (evt) => {
+    // Запрещаем браузеру переходить по адресу формы
+    evt.preventDefault();
 
-	function handleDescriptionChange(event) {
-		setDescription(event.target.value);
-	}
+    // В аргумент внешней функции обработчика передаем управляемые стейт-переменные
+    onUpdateUser({
+      name: name,
+      about: description,
+    });
+  };
 
-	function handleSubmit(e) {
-		e.preventDefault();
+  // Подписка на контекст
+  const currentUser = useContext(CurrentUserContext);
 
-		onUpdateUser({
-			 user,
-             job
-		});
-	}
+  // После загрузки текущего пользователя из API
+  // Его данные будут использованы в управляемых компонентах
+  // Стейт-переменные будут обновляться при изменении контекста
+  // И при открытом состоянии попапа (второй аргумент)
+  useEffect(() => {
+    setName(currentUser.name);
+    setDescription(currentUser.about);
+  }, [currentUser, isOpen]);
 
-	return (
-		<PopupWithForm
-			isOpen={isOpen}
-			onClose={onClose}
-			onCloseEsc={onCloseEsc}
-			onCloseOverlay={onCloseOverlay}
-			onSubmit={handleSubmit}
-			isLoading={isLoading}
-			name='popupEdit'
-			title='Редактировать профиль'
-			submitButton='Сохранить'
-			submitBtnLoading='Сохранение...'
-			children={
-				<>
-					<label className="popup__form">
-						<input id="person" name="user" className="popup__input popup__input_type_name" value={user || ''} onChange={handleNameChange} type="text" placeholder="Имя" minLength="2" maxLength="40" required />
-						<span id="text-name-error" className="person-error popup__error"></span>
-					</label>
-					<label className="popup__form">
-						<input id="about" name="job" className="popup__input popup__input_type_composition" value={job || ''} onChange={handleDescriptionChange} type="text" placeholder="О себе" minLength="2" maxLength="200" required />
-						<span id="text-profile-error" className="about-error popup__error"></span>
-					</label>
-				</>
-			}
-		/>
-	)
+  return (
+    <PopupWithForm
+      isOpen={isOpen}
+      onClose={onClose}
+      onSubmit={handleSubmit}
+      type="edit"
+      title="Редактировать профиль"
+      name="edit-info"
+      buttonText="Сохранить"
+    >
+      <input
+        type="text"
+        id="name"
+        className="popup__input popup__input_type_name"
+        name="name"
+        placeholder="Имя"
+        required
+        minLength={2}
+        maxLength={40}
+        value={name || ""}
+        onChange={handleChangeName}
+      />
+      <span id="name-error" className="popup__error popup__error_visible"></span>
+      <input
+        type="text"
+        id="info"
+        className="popup__input popup__input_type_info"
+        name="about"
+        placeholder="О себе"
+        required
+        minLength={2}
+        maxLength={200}
+        value={description || ""}
+        onChange={handleChangeDescription}
+      />
+      <span id="info-error" className="popup__error popup__error_visible"></span>
+    </PopupWithForm>
+  );
 }
 
 export default EditProfilePopup;

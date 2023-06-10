@@ -1,11 +1,10 @@
-.profile__info{
-    padding: 22px 0 25px 30px;
-    display: flex;
-    flex-direction: column;
+.profile__info {
+  margin: 0 0 0 30px;
+  align-self: center;
 }
-@media screen and (max-width: 1023px) {
-    .profile__info {
-        padding: 22.25px 0 36px 0;
-        margin: 0 auto;
-    }
+
+@media screen and (max-width: 766px) {
+  .profile__info {
+    margin: 22px 0 0 0;
   }
+}
