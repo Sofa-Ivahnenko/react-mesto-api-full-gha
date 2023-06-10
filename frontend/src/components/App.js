@@ -79,22 +79,29 @@ function App() {
 		setInfoTooltip(true);
 	};
 
-useEffect(() => {
-	const jwt = localStorage.getItem('jwt');
-	if (jwt) {
-		checkToken(jwt)
-			.then((res) => {
-				if (res) {
-					setIsLoggedIn(true);
-					setEmailValue(res.data.email);
-					navigate('/');
-				}
-			})
-			.catch((err) => {
-				console.error(err);
-			});
-	}
-}, []);	
+// useEffect(() => {
+// 	const jwt = localStorage.getItem('jwt');
+// 	if (jwt) {
+// 		checkToken(jwt)
+// 			.then((res) => {
+// 				if (res) {
+// 					setIsLoggedIn(true);
+// 					setEmailValue(res.data.email);
+// 					navigate('/');
+// 				}
+// 			})
+// 			.catch((err) => {
+// 				console.error(err);
+// 			});
+// 	}
+// }, []);	
+
+
+// useEffect(() => {
+//     if (isLogged === true) {
+//       navigate("/");
+//     }
+//   }, [isLogged, navigate]);
 
 useEffect(() => {
 	if (isLoggedIn) {
