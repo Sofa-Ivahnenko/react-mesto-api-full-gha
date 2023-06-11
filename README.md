@@ -13,4 +13,3 @@ IP-адрес 130.193.38.81
 [Frontend](https://api.websofa.nomoredomains.rocks)
 
 [Backend](https://api.websofa.mesto.nomoredomains.rocks)
-уиоуцатацуло
