@@ -11,6 +11,7 @@ function checkResponse(res) {
 // При попытке авторизоваться (для компонента Логин)
 export function authorization(email, password) {
   return fetch(`${BASE_URL}/signin`, {
+    mode: 'no-cors',
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -23,6 +24,7 @@ export function authorization(email, password) {
 // При попытке зарегестрироваться (для компонента Регистер)
 export function registration(email, password) {
   return fetch(`${BASE_URL}/signup`, {
+    mode: 'no-cors',
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -34,6 +36,7 @@ export function registration(email, password) {
 // Запрос на получение токена
 export function getToken(token) {
   return fetch(`${BASE_URL}/users/me`, {
+    mode: 'no-cors',
     headers: {
       "Content-Type": "application/json",
       authorization: `Bearer ${token}`

@@ -11,6 +11,7 @@ class Api {
   getUserInfo() {
     const token = localStorage.getItem("jwt");
     return fetch(`${this._baseUrl}/users/me`, {
+      mode: 'no-cors',
       headers: {
         authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -20,6 +21,7 @@ class Api {
   getInitialCards() {
     const token = localStorage.getItem("jwt");
     return fetch(`${this._baseUrl}/cards`, {
+      mode: 'no-cors',
       headers: {
         authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -29,6 +31,7 @@ class Api {
   updateUserInfo({name, about}) {
     const token = localStorage.getItem("jwt");
     return fetch(`${this._baseUrl}/users/me`, {
+      mode: 'no-cors',
       method: "PATCH",
       headers: {
         authorization: `Bearer ${token}`,
@@ -43,6 +46,7 @@ class Api {
   updateAvatar({avatar}) {
     const token = localStorage.getItem("jwt");
     return fetch(`${this._baseUrl}/users/me/avatar`, {
+      mode: 'no-cors',
       method: "PATCH",
       headers: {
         authorization: `Bearer ${token}`,
@@ -56,6 +60,7 @@ class Api {
   addCard({name, link}) {
     const token = localStorage.getItem("jwt");
     return fetch(`${this._baseUrl}/cards`, {
+      mode: 'no-cors',
       method: "POST",
       headers: {
         authorization: `Bearer ${token}`,
@@ -70,6 +75,7 @@ class Api {
   deleteCard(cardId) {
     const token = localStorage.getItem("jwt");
     return fetch(`${this._baseUrl}/cards/${cardId}`, {
+      mode: 'no-cors',
       method: "DELETE",
       headers: {
         authorization: `Bearer ${token}`,
@@ -80,6 +86,7 @@ class Api {
   addLike(id) {
     const token = localStorage.getItem("jwt");
     return fetch(`${this._baseUrl}/cards/${id}/likes`, {
+      mode: 'no-cors',
       method: "PUT",
       headers: {
         authorization: `Bearer ${token}`,
@@ -90,6 +97,7 @@ class Api {
   deleteLike(id) {
     const token = localStorage.getItem("jwt");
     return fetch(`${this._baseUrl}/cards/${id}/likes`, {
+      mode: 'no-cors',
       method: "DELETE",
       headers: {
         authorization: `Bearer ${token}`,
@@ -102,6 +110,7 @@ class Api {
     const token = localStorage.getItem("jwt");
     if (isLiked) {
       return fetch(`${this._baseUrl}/cards/${id}/likes`, {
+        mode: 'no-cors',
         headers: {
           authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -111,6 +120,7 @@ class Api {
         .then((res) => this._checkResponse(res))
     } else {
       return fetch(`${this._baseUrl}/cards/${id}/likes`, {
+        mode: 'no-cors',
         headers: {
           authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
