@@ -8,7 +8,7 @@
 
 ## Ссылки на проект
 
-IP-адрес 130.193.38.81
+IP-адрес 51.250.14.139
 
 [Frontend](https://api.websofa.nomoredomains.rocks)
 
