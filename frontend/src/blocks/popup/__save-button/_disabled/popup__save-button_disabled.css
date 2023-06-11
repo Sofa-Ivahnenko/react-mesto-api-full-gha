@@ -1,5 +1,7 @@
-.popup__save-button_disabled {
-	background-color:	white;
-	border: 1px solid #C4C4C4;
-	color: #C4C4C4;
+.popup__save-button_disabled{
+    opacity: 0.2;
+}
+
+.popup__save-button_disabled:hover{
+    opacity: 0.2;
 }
