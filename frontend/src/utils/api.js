@@ -87,10 +87,10 @@ class Api{
 
 const api = new Api({
   baseUrl: 'https://api.websofa.mesto.nomoredomains.rocks',
-  headers: {
-		'Content-Type': 'application/json',
-		'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
-	},
+  // headers: {
+	// 	'Content-Type': 'application/json',
+	// 	'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+	// },
   // headers:{
   //   authorization: '07d0cc49-29ca-4bb6-aef2-dd481f22cbcb',
   //   'Content-Type': 'application/json'
