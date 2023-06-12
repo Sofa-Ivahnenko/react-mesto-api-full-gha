@@ -85,7 +85,7 @@ useEffect(() => {
 		checkToken(jwt)
 			.then((res) => {
 				if (res) {
-					console.log(res.email);
+					console.log(res);
 					setIsLoggedIn(true);
 					setEmailValue(res.email);
 					navigate('/');
