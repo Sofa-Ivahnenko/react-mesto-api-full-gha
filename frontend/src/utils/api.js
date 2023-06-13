@@ -117,11 +117,11 @@ class Api{
     }
   }  
 
-  
+const jwtToken = localStorage.getItem("jwt");
 const api = new Api({
     baseUrl: 'api.websofa.mesto.nomoredomains.rocks',
     headers:{
-      authorization: '07d0cc49-29ca-4bb6-aef2-dd481f22cbcb',
+      authorization: `Bearer ${jwtToken}`,
       'Content-Type': 'application/json'
     }
   });
