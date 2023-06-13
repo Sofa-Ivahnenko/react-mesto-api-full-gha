@@ -1,0 +1,10 @@
+.profile__change-button {
+	content: "";
+	background: black;
+	width: 100%;
+	height: 100%;
+	background-image: url(../../../images/profile-change-button.svg);
+	background-repeat: no-repeat;
+	background-position: center;
+	padding: 0;
+}
