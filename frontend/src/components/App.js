@@ -182,11 +182,11 @@ useEffect(() => {
 	}
 
 	function handleCardDelete(card) {
-		api.deleteCard(card._id).then(() => { 
-			setCards((items) => items.filter((c) => c._id !== card._id && c)); 
-		}).catch((err) => { 
-			console.error(err); 
-		}); 
+		api.deleteCard(card._id).then(() => {
+			setCards((items) => items.filter((c) => c._id !== card._id && c));
+		}).catch((err) => {
+			console.error(err);
+		});
 	}
 
 	function closeAllPopups() {
