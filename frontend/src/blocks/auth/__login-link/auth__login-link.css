@@ -1,0 +1,11 @@
+.auth__login-link {
+    justify-content: center;
+    text-decoration: none;
+    padding-top: 15px;
+    line-height: 17px;
+    font-weight: 400;
+    min-width: 358px;
+    font-size: 14px;
+    color: #ffffff;
+    display: flex;
+}

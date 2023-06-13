@@ -1,80 +1,97 @@
+/**
+ * @author Oleg Khilko
+ */
+
 const cardSchema = require('../models/card');
+const NotFoundError = require('../errors/NotFoundError');
+const BadRequestError = require('../errors/BadRequestError');
+const ForbiddenError = require('../errors/ForbiddenError');
 
-const BadRequestError = require('../errors/bad-request-error');
-const ForbiddenError = require('../errors/forbidden-error');
-const NotFoundError = require('../errors/not-found-error');
-
-module.exports.getAllCards = (req, res, next) => {
-  cardSchema.find({})
-    .then((cards) => res.send(cards))
+module.exports.getCards = (request, response, next) => {
+  cardSchema
+    .find({})
+    .then((cards) => response.status(200)
+      .send(cards))
     .catch(next);
 };
 
-module.exports.createCard = (req, res, next) => {
-  const { name, link } = req.body;
-  const owner = req.user._id;
-  cardSchema.create({ name, link, owner })
-    .then((card) => res.status(201).send(card))
+module.exports.createCard = (request, response, next) => {
+  const {
+    name,
+    link,
+  } = request.body;
+  const owner = request.user._id;
+
+  cardSchema
+    .create({
+      name,
+      link,
+      owner,
+    })
+    .then((card) => response.status(201)
+      .send(card))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError('Invalid data'));
+        next(new BadRequestError('Invalid data for card creation'));
       } else {
         next(err);
       }
     });
 };
 
-module.exports.deleteCardById = (req, res, next) => {
-  const { cardId } = req.params;
+module.exports.deleteCard = (request, response, next) => {
+  const { cardId } = request.params;
+
   cardSchema.findById(cardId)
     .then((card) => {
       if (!card) {
-        throw new NotFoundError('Not found');
-      } if (!card.owner.equals(req.user._id)) {
+        throw new NotFoundError('User cannot be found');
+      }
+      if (!card.owner.equals(request.user._id)) {
         return next(new ForbiddenError('Card cannot be deleted'));
       }
-      return card.deleteOne().then(() => res.send({ message: 'Card was deleted' }));
+      return card.deleteOne().then(() => response.send({ message: 'Card was deleted' }));
     })
     .catch(next);
 };
 
-module.exports.addLike = (req, res, next) => {
+module.exports.addLike = (request, response, next) => {
   cardSchema
     .findByIdAndUpdate(
-      req.params.cardId,
-      { $addToSet: { likes: req.user._id } },
+      request.params.cardId,
+      { $addToSet: { likes: request.user._id } },
       { new: true },
     )
     .then((card) => {
       if (!card) {
-        throw new NotFoundError('Not found');
+        throw new NotFoundError('User cannot be found');
       }
-      return res.send(card);
+      response.send({ data: card });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        return next(new BadRequestError('Invalid data'));
+        return next(new BadRequestError('Incorrect data'));
       }
       return next(err);
     });
 };
 
-module.exports.deleteLike = (req, res, next) => {
+module.exports.deleteLike = (request, response, next) => {
   cardSchema
     .findByIdAndUpdate(
-      req.params.cardId,
-      { $pull: { likes: req.user._id } },
+      request.params.cardId,
+      { $pull: { likes: request.user._id } },
       { new: true },
     )
     .then((card) => {
       if (!card) {
-        throw new NotFoundError('Not found');
+        throw new NotFoundError('User cannot be found');
       }
-      return res.send(card);
+      response.send({ data: card });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        return next(new BadRequestError('Invalid data'));
+        return next(new BadRequestError('Incorrect data'));
       }
       return next(err);
     });

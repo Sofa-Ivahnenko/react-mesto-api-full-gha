@@ -1,30 +1,61 @@
-import { useState } from 'react';
+import React, {useState} from "react";
+import {Redirect} from "react-router-dom";
 
-export default function Login({ onLogin }) {
-	const [password, setPassword] = useState('');
-	const [email, setEmail] = useState('');
+function Login({isLoggedIn, onLogin, buttonText, title}) {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-	const handlePasswordInput = event => {
-		setPassword(event.target.value);
-	};
+    function handlePasswordChange(evt) {
+        setPassword(evt.target.value);
+    }
 
-	const handleEmailInput = event => {
-		setEmail(event.target.value);
-	};
+    function handleEmailChange(evt) {
+        setEmail(evt.target.value);
+    }
 
-	const handleSubmit = event => {
-		event.preventDefault();
-		onLogin(email, password);
-	};
+    function handleSubmit(e) {
+        e.preventDefault();
+        onLogin(email, password);
+    }
 
-	return (
-		<section className='auth'>
-			<h3 className='auth__title'>Вход</h3>
-			<form className='auth__form' onSubmit={handleSubmit}>
-				<input className='auth__input' type='email' placeholder='Email' value={email} onChange={handleEmailInput} required></input>
-				<input className='auth__input' type='password' placeholder='Пароль' value={password} onChange={handlePasswordInput} required></input>
-				<button className='auth__submit-button'>Войти</button>
-			</form>
-		</section>
-	);
-};
+    if (isLoggedIn) {
+        return <Redirect to="/"/>;
+    }
+
+    return (
+        <form onSubmit={handleSubmit} className="auth__form" noValidate>
+            <h2 className="auth__title">{title}</h2>
+            <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Email"
+                value={email}
+                className="auth__input"
+                onChange={handleEmailChange}
+                autoComplete="off"
+            />
+
+            <input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Пароль"
+                value={password}
+                className="auth__input"
+                onChange={handlePasswordChange}
+                autoComplete="off"
+            />
+            <div className="auth__container">
+                <button
+                    className="auth__button pointer"
+                    type="submit">
+                    {buttonText}
+                </button>
+            </div>
+
+        </form>
+    );
+}
+
+export default Login;

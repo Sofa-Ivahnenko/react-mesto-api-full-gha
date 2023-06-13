@@ -1,5 +1,9 @@
-const mongoose = require('mongoose');
+/**
+ * @author Oleg Khilko
+ */
+
 const validator = require('validator');
+const mongoose = require('mongoose');
 
 const cardSchema = new mongoose.Schema({
   name: {
@@ -26,7 +30,7 @@ const cardSchema = new mongoose.Schema({
     ref: 'user',
     default: [],
   }],
-  createdAd: {
+  createdAt: {
     type: Date,
     default: Date.now,
   },

@@ -1,96 +1,102 @@
-class Api{
-    constructor({baseUrl, headers}){
-      this._headers = headers;
-      this._baseUrl = baseUrl;
+class Api {
+    constructor(options) {
+        this._url = options.url
     }
-  
-    // Приватный метод(декодирует ответ в формате JSON)
-    _parseResponse(res) {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`)
+
+    getCards() {
+        const token = localStorage.getItem("jwt");
+        return fetch(`${this._url}/cards`, {
+            method: 'GET',
+            headers: {
+                "content-type": "application/json",
+                "authorization": `Bearer ${token}`,
+            }
+        }).then(res => this._checkResponse(res));
     }
-  
-    // получение карточек с сервера
-    getCardsList(){
-      return fetch(`${this._baseUrl}/cards`, {
-        headers: this._headers
-      }).then(res => this._parseResponse(res));
+
+    setCard(data) {
+        const token = localStorage.getItem("jwt");
+        return fetch(`${this._url}/cards`, {
+            method: 'POST',
+            headers: {
+                "content-type": "application/json",
+                "authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                name: data.name,
+                link: data.link
+            })
+        }).then(res => this._checkResponse(res));
     }
-    // добавление новой карточки через попап
-    creatCard(data) {
-      return fetch(`${this._baseUrl}/cards`, {
-        method: 'POST',
-        headers: this._headers,
-        body: JSON.stringify({
-          name: data.name,
-          link: data.link
-        })
-      }).then(res => this._parseResponse(res));
-    }
-  
-    // удаление карточки 
+
     deleteCard(cardId) {
-      return fetch(`${this._baseUrl}/cards/${cardId}`, {
-        method: 'DELETE',
-        headers: this._headers
-      }).then(res => this._parseResponse(res));
+        const token = localStorage.getItem("jwt");
+        return fetch(`${this._url}/cards/${cardId}`, {
+            method: 'DELETE',
+            headers: {
+                "content-type": "application/json",
+                "authorization": `Bearer ${token}`,
+            },
+        }).then(res => this._checkResponse(res));
     }
-  
-    // поставить лайк карточке
-    setLike(cardId) {
-      return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
-        method: 'PUT',
-        headers: this._headers
-      }).then(res => this._parseResponse(res));
-    }  
-  
-    // удаление лайка
-    deleteLike(cardId) {
-      return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
-        method: 'DELETE',
-        headers: this._headers
-      }).then(res => this._parseResponse(res));
-    }
-  
-    // получение информации о пользователе с сервера
+
     getUserInfo() {
-      return fetch(`${this._baseUrl}/users/me`, {
-        headers: this._headers
-      }).then(res => this._parseResponse(res));
+        const token = localStorage.getItem("jwt");
+        return fetch(`${this._url}/users/me`, {
+            method: 'GET',
+            headers: {
+                "content-type": "application/json",
+                "authorization": `Bearer ${token}`,
+            },
+        }).then(res => this._checkResponse(res));
     }
-  
-    // редактирование информации о пользователе через попап
-    editUserInfo(data) {
-      return fetch(`${this._baseUrl}/users/me`, {
-        method: 'PATCH',
-        headers: this._headers,
-        body: JSON.stringify({
-          name: data.user,
-          about: data.job
-        })
-      }).then(res => this._parseResponse(res));
+
+    setUserInfo(forms) {
+        const token = localStorage.getItem("jwt");
+        return fetch(`${this._url}/users/me`, {
+            method: 'PATCH',
+            headers: {
+                "content-type": "application/json",
+                "authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify(forms)
+        }).then(res => this._checkResponse(res));
     }
-  
-    // редактирование аватара пользователя через попап
-    editAvatar(data) {
-      return fetch(`${this._baseUrl}/users/me/avatar`, {
-        method: 'PATCH',
-        headers: this._headers,
-        body: JSON.stringify({
-          avatar: data.avatar
-        })
-      }).then(res => this._parseResponse(res));
+
+    setUserAvatar(data) {
+        const token = localStorage.getItem("jwt");
+        return fetch(`${this._url}/users/me/avatar`, {
+            method: 'PATCH',
+            headers: {
+                "content-type": "application/json",
+                "authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                avatar: data.avatar
+            })
+        }).then(res => this._checkResponse(res));
     }
-  }  
+
+    setLike(cardId, isLiked) {
+        const token = localStorage.getItem("jwt");
+        return fetch(`${this._url}/cards/${cardId}/likes`, {
+            method: `${isLiked ? 'PUT' : 'DELETE'}`,
+            headers: {
+                "content-type": "application/json",
+                "authorization": `Bearer ${token}`,
+            },
+        }).then(res => this._checkResponse(res));
+    }
+
+    _checkResponse(res) {
+        return res.ok
+            ? res.json()
+            : Promise.reject(`${res.status} ${res.statusText}`);
+    }
+}
 
 const api = new Api({
-    baseUrl: 'https://api.websofa.mesto.nomoredomains.rocks',
-    // headers:{
-    //   authorization: '07d0cc49-29ca-4bb6-aef2-dd481f22cbcb',
-    //   'Content-Type': 'application/json'
-    // }
-  });
+    url: "api.websofa.mesto.nomoredomains.rocks"
+});
 
-export default api
+export default api;

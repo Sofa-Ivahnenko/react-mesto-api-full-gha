@@ -1,11 +1,29 @@
-export default function InfoTooltip({ popupStatus, isOpen, onClose }) {
-	return (
-		<section className={`popup popupInfoTooltip ${isOpen && 'popup_opened'}`}>
-			<figure className="popup__container">
-				<button onClick={onClose} className="popup__close-button" type="button"></button>
-				<img src={popupStatus.image} alt={`Информационное сообщение: ${popupStatus.message}`} className="popup__icon" />
-				<figcaption className="popup__icon-caption">{popupStatus.message}</figcaption>
-			</figure>
-		</section>
-	);
-};
+import React from "react";
+
+function InfoTooltip({name, onClose, isOpen, isSuccess}) {
+    return (
+        <div className={`popup popup_type_${name} ${isOpen ? "popup_opened" : ""}`}>
+            <div className="popup__container">
+                <button
+                    className="popup__close-button pointer"
+                    onClick={onClose}
+                    type="button"
+                />
+                <div
+                    className={`popup__success ${isSuccess
+                        ? "popup__success_type_ok"
+                        : "popup__success_type_fail"
+                    }`}
+                />
+                <h2
+                    className="popup__title">
+                    {isSuccess
+                        ? "Вы успешно зарегистрировались!"
+                        : "Что-то пошло не так! Попробуйте еще раз."}
+                </h2>
+            </div>
+        </div>
+    );
+}
+
+export default InfoTooltip;

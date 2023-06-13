@@ -1,28 +1,28 @@
-import {useEffect} from "react";
+import React from 'react';
 
-function PopupWithForm ({name, title, submitButton, children, isOpen, onClose, onCloseEsc, onCloseOverlay, onSubmit, isLoading, submitBtnLoading, }) {
-
-    useEffect(()=>{
-        if(isOpen) {
-            document.addEventListener('keydown', onCloseEsc);
-            document.addEventListener('mousedown', onCloseOverlay);
-        } else {
-            document.removeEventListener('keydown', onCloseEsc);
-            document.removeEventListener('mousedown', onCloseOverlay);
-        }
-    }, [isOpen])
-    
-    return(
-        <section className={`popup popup${name} ${isOpen ? "popup_opened" : ""}`}>
+function PopupWithForm({name, title, buttonText, children, onClose, onSubmit, isOpen}) {
+    return (
+        <div className={`popup popup_type_${name} ${isOpen ? "popup_opened" : ""}`}>
             <div className="popup__container">
-                <form className="popup__content" name={name} onSubmit={onSubmit}>
-                    <h2 className="popup__heading">{title}</h2>
-                        {children}
-                    <button type="submit" className="popup__save-button">{isLoading ? submitBtnLoading : submitButton}</button>
+                <button
+                    className="popup__close-button pointer"
+                    onClick={onClose}
+                    type="button"
+                />
+                <form
+                    className="popup__form"
+                    onSubmit={onSubmit}
+                    name={name}
+                    noValidate
+                >
+                    <h2 className="popup__title">{title}</h2>
+                    {children}
+                    <button
+                        className="popup__save-button pointer"
+                        type="submit">{buttonText}</button>
                 </form>
-                <button type="button" className="popup__close-button popupEdit__close-button" onClick={onClose}></button>
             </div>
-        </section>
+        </div>
     )
 }
 
