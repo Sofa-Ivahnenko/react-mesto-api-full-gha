@@ -29,7 +29,7 @@ function Main({onEditProfile, onAddPlace, onEditAvatar,onCardLike, onCardClick, 
                   key={card._id}
                   onCardClick={onCardClick}
                   onCardLike={onCardLike}
-                  onCardDelete={onCardDelete}
+                  onCardDelete={onConfirmCardDelete}
                 />
                 //   return (
                 //   <Card card={card} key={card._id} likes={card.likes} name={card.name} link={card.link} onCardClick={onCardClick} onCardLike={onCardLike} onConfirmCardDelete={onConfirmCardDelete} />
