@@ -35,7 +35,7 @@ const signIn = (email, password) => {
 
 const checkToken = (token) => {
 	const requestUrl = BASE_URL + '/users/me';
-	const token = localStorage.getItem("jwt");
+	// const token = localStorage.getItem("jwt");
 	return fetch(requestUrl, {
 		method: 'GET',
 		headers: {
