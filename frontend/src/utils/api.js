@@ -1,6 +1,6 @@
 class Api{
-    constructor({baseUrl, headers}){
-      this._headers = headers;
+    constructor({baseUrl}){
+      // this._headers = headers;
       this._baseUrl = baseUrl;
     }
   
@@ -14,15 +14,23 @@ class Api{
   
     // получение карточек с сервера
     getCardsList(){
+      const token = localStorage.getItem("jwt");
       return fetch(`${this._baseUrl}/cards`, {
-        headers: this._headers
+        headers: {
+          "content-type": "application/json",
+          "authorization": `Bearer ${token}`,
+      }
       }).then(res => this._parseResponse(res));
     }
     // добавление новой карточки через попап
     creatCard(data) {
+      const token = localStorage.getItem("jwt");
       return fetch(`${this._baseUrl}/cards`, {
         method: 'POST',
-        headers: this._headers,
+        headers: {
+          "content-type": "application/json",
+          "authorization": `Bearer ${token}`,
+      },
         body: JSON.stringify({
           name: data.name,
           link: data.link
@@ -32,40 +40,60 @@ class Api{
   
     // удаление карточки 
     deleteCard(cardId) {
+      const token = localStorage.getItem("jwt");
       return fetch(`${this._baseUrl}/cards/${cardId}`, {
         method: 'DELETE',
-        headers: this._headers
+        headers: {
+          "content-type": "application/json",
+          "authorization": `Bearer ${token}`,
+      }
       }).then(res => this._parseResponse(res));
     }
   
     // поставить лайк карточке
     setLike(cardId) {
+      const token = localStorage.getItem("jwt");
       return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
         method: 'PUT',
-        headers: this._headers
+        headers: {
+          "content-type": "application/json",
+          "authorization": `Bearer ${token}`,
+      }
       }).then(res => this._parseResponse(res));
     }  
   
     // удаление лайка
     deleteLike(cardId) {
+      const token = localStorage.getItem("jwt");
       return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
         method: 'DELETE',
-        headers: this._headers
+        headers: {
+          "content-type": "application/json",
+          "authorization": `Bearer ${token}`,
+      }
       }).then(res => this._parseResponse(res));
     }
   
     // получение информации о пользователе с сервера
     getUserInfo() {
+      const token = localStorage.getItem("jwt");
       return fetch(`${this._baseUrl}/users/me`, {
-        headers: this._headers
+        headers: {
+          "content-type": "application/json",
+          "authorization": `Bearer ${token}`,
+      }
       }).then(res => this._parseResponse(res));
     }
   
     // редактирование информации о пользователе через попап
     editUserInfo(data) {
+      const token = localStorage.getItem("jwt");
       return fetch(`${this._baseUrl}/users/me`, {
         method: 'PATCH',
-        headers: this._headers,
+        headers: {
+          "content-type": "application/json",
+          "authorization": `Bearer ${token}`,
+        },
         body: JSON.stringify({
           name: data.user,
           about: data.job
@@ -75,9 +103,13 @@ class Api{
   
     // редактирование аватара пользователя через попап
     editAvatar(data) {
+      const token = localStorage.getItem("jwt");
       return fetch(`${this._baseUrl}/users/me/avatar`, {
         method: 'PATCH',
-        headers: this._headers,
+        headers: {
+          "content-type": "application/json",
+          "authorization": `Bearer ${token}`,
+      },
         body: JSON.stringify({
           avatar: data.avatar
         })
@@ -86,11 +118,11 @@ class Api{
   }  
 
 const api = new Api({
-    baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-60',
-    headers:{
-      authorization: '07d0cc49-29ca-4bb6-aef2-dd481f22cbcb',
-      'Content-Type': 'application/json'
-    }
+    baseUrl: 'https://api.websofa.mesto.nomoredomains.rocks',
+    // headers:{
+    //   authorization: '07d0cc49-29ca-4bb6-aef2-dd481f22cbcb',
+    //   'Content-Type': 'application/json'
+    // }
   });
 
 export default api
