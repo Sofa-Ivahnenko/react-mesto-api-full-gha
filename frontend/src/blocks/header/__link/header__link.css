@@ -1,20 +1,23 @@
 .header__link {
-	font-family: 'Inter', 'Arial', sans-serif;
-	text-decoration: none;
-	transition: opacity .2s linear;
-	color: #fff;
-	font-weight: 400;
-	font-size: 14px;
-	line-height: 16px;
+    font-family: 'Inter', 'Arial', 'Georgia', 'Tahoma', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    color: #FFFFFF;
+    text-decoration: none;
+    margin-left: 24px;
+    transition: .2s linear opacity;
 }
 
 .header__link:hover {
-	opacity: .6;
+    opacity: .6;
 }
 
-@media screen and (min-width: 768px) {
-	.header__link {
-		font-size: 18px;
-		line-height: 22px;
-	}
-}
+@media screen and (max-width: 550px) {
+    .header__link {
+        font-size: 14px;
+        line-height: 17px;
+        padding: 0px;
+    }
+  }

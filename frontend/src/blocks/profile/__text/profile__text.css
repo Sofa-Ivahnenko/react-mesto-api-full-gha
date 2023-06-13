@@ -1,12 +1,11 @@
-.profile__text{
+.profile__text {
     display: flex;
-    padding: 0;
+    flex-direction: row;
 }
 
-
-@media screen and (max-width: 1023px) {
+@media screen and (max-width: 665px) {
     .profile__text {
-        max-width: 282px;
+        justify-content: center;
+        align-content: center;
     }
-  }
-  
+}

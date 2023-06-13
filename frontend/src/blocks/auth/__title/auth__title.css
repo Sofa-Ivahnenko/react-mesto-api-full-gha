@@ -1,17 +1,18 @@
 .auth__title {
-	font-family: 'Inter', 'Arial', sans-serif;
-	margin: 40px 0 40px;
-	font-weight: 900;
-	font-size: 20px;
-	line-height: 25px;
-	color: #FFFFFF;
-
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', 'Arial', 'Georgia', 'Tahoma', sans-serif;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 29px;
+    color: #fff;
+    text-align: center;
 }
-
-@media screen and (min-width: 768px) {
-	.auth__title {
-		margin: 60px 0 50px;
-		font-size: 24px;
-		line-height: 30px;
-	}
+  
+@media screen and (max-width: 450px) {
+    .auth__title {
+      font-size: 18px;
+      line-height: 22px;
+    }
 }

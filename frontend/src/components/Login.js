@@ -1,30 +1,37 @@
-import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import * as auth from '../utils/auth.js';
+import Auth from './Auth';
 
-export default function Login({ onLogin }) {
-	const [password, setPassword] = useState('');
-	const [email, setEmail] = useState('');
+const Login = ({handleLogin, handleLoginFail }) => {
+    const handleSubmit = (email, password) => {
+        if (!email || !password){
+            return;
+        }
+        auth.authorize(email, password)
+            .then((data) => {
+                if (data && data.token) {
+                    handleLogin();
+                } else {
+                    alert("Неверный логин или пароль")
+                }
+            })
+            .catch(err => {
+                handleLoginFail();
+                console.log(err);
+            });
+    }
+    return (
+        <Auth
+            onSubmit={handleSubmit}
+            title={'Вход'}
+            buttonText={'Войти'}
+        >
+            <div className="auth__option">
+                <p className="auth__option-title">Ещё не зарегистрированы?&nbsp;</p>
+                <Link to="/sign-up" className="auth__option-link">Зарегистрироваться</Link>
+            </div>
+        </Auth>
+    )
+}
 
-	const handlePasswordInput = event => {
-		setPassword(event.target.value);
-	};
-
-	const handleEmailInput = event => {
-		setEmail(event.target.value);
-	};
-
-	const handleSubmit = event => {
-		event.preventDefault();
-		onLogin(email, password);
-	};
-
-	return (
-		<section className='auth'>
-			<h3 className='auth__title'>Вход</h3>
-			<form className='auth__form' onSubmit={handleSubmit}>
-				<input className='auth__input' type='email' placeholder='Email' value={email} onChange={handleEmailInput} required></input>
-				<input className='auth__input' type='password' placeholder='Пароль' value={password} onChange={handlePasswordInput} required></input>
-				<button className='auth__submit-button'>Войти</button>
-			</form>
-		</section>
-	);
-};
+export default Login

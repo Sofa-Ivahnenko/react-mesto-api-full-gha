@@ -1,62 +1,68 @@
-import React from "react";
 import PopupWithForm from "./PopupWithForm";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import {useEffect, useState, useContext} from 'react'
+import {CurrentUserContext} from '../contexts/CurrentUserContext'
 
-function EditProfilePopup({ isOpen, onClose, onCloseEsc, onCloseOverlay, onUpdateUser, isLoading }) {
-	const [user, setName] = React.useState('');
-	const [job, setDescription] = React.useState('');
-	const currentUser = React.useContext(CurrentUserContext);
+function EditProfilePopup(props) {
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const currentUser = useContext(CurrentUserContext);
 
-	React.useEffect(() => {
-		if (isOpen) {
-			setName(currentUser.name);
-			setDescription(currentUser.about);
-		}
-	}, [currentUser, isOpen]);
+    useEffect(() => {
+        if (currentUser.name !== undefined && currentUser.about !== undefined) {
+            setName(currentUser.name);
+            setDescription(currentUser.about);
+        }
+    }, [currentUser, props.isOpen]);
 
-	function handleNameChange(event) {
-		setName(event.target.value);
-	}
+    const handleNameChange = (evt) => {
+        setName(evt.target.value)  
+    }
+    const handleDescriptionChange = (evt) => {
+        setDescription(evt.target.value)
+    }
+    const handleSubmit = (evt) => {
+        evt.preventDefault();
+        props.onUpdateUser({
+            name, 
+            about: description
+        })
+    }
 
-	function handleDescriptionChange(event) {
-		setDescription(event.target.value);
-	}
-
-	function handleSubmit(e) {
-		e.preventDefault();
-
-		onUpdateUser({
-			 user,
-             job
-		});
-	}
-
-	return (
-		<PopupWithForm
-			isOpen={isOpen}
-			onClose={onClose}
-			onCloseEsc={onCloseEsc}
-			onCloseOverlay={onCloseOverlay}
-			onSubmit={handleSubmit}
-			isLoading={isLoading}
-			name='popupEdit'
-			title='Редактировать профиль'
-			submitButton='Сохранить'
-			submitBtnLoading='Сохранение...'
-			children={
-				<>
-					<label className="popup__form">
-						<input id="person" name="user" className="popup__input popup__input_type_name" value={user || ''} onChange={handleNameChange} type="text" placeholder="Имя" minLength="2" maxLength="40" required />
-						<span id="text-name-error" className="person-error popup__error"></span>
-					</label>
-					<label className="popup__form">
-						<input id="about" name="job" className="popup__input popup__input_type_composition" value={job || ''} onChange={handleDescriptionChange} type="text" placeholder="О себе" minLength="2" maxLength="200" required />
-						<span id="text-profile-error" className="about-error popup__error"></span>
-					</label>
-				</>
-			}
-		/>
-	)
+    return (
+        <PopupWithForm
+            name={'profile'}
+            title={'Редактировать профиль'}
+            isOpen={props.isOpen}
+            onButtonClose={props.onButtonClose}
+            onOverlayClose={props.onOverlayClose}
+            buttonText={'Сохранить'}
+            onSubmit={handleSubmit}>
+                    <input 
+                        className="popup__input popup__input_type_name" 
+                        name="name" 
+                        type="text" 
+                        placeholder="Ваше имя"
+                        id ="name-profile" 
+                        minLength={2} 
+                        maxLength={40}
+                        required
+                        value={name}
+                        onChange={handleNameChange}/>
+                    <span id="name-profile-error" className="error"></span>
+                    <input 
+                        className="popup__input popup__input_type_job" 
+                        name="job" 
+                        type="text" 
+                        placeholder="Ваша профессия"
+                        id ="job-profile" 
+                        minLength={2} 
+                        maxLength={30}
+                        required
+                        value={description}
+                        onChange={handleDescriptionChange}/>
+                    <span id="job-profile-error" className="error"></span>
+        </PopupWithForm>
+    )
 }
 
-export default EditProfilePopup;
+export default EditProfilePopup

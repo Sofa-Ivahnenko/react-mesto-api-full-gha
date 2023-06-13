@@ -1,15 +1,20 @@
-function ImagePopup({ card, onClose }) {
-	return (
-        <section className={`popup popupView ${card.link ? "popup_opened" : ""}`}>
-            <div className="popupView__content">
-                <button type="button" className="popup__close-button popupView__close-button" onClick={onClose}></button>
-                <figure className="popupView__content-photo">
-                    <img src={card.link} alt={card.name} className="popupView__image" />
-                    <figcaption className="popupView__subtitle">{card.name}</figcaption>
-                </figure>
+function ImagePopup(props) {
+    const card = props.card;
+    return (
+        <div className={`popup popup_zoom ${props.isOpen && 'popup_opened'}`} onMouseDown={props.onOverlayClose}>
+            <div className="popup__container popup__container_zoom">
+                <button 
+                    className="popup__close popup__close_zoom" 
+                    onClick={props.onButtonClose}
+                    type="button"
+                    aria-label="закрыть"></button>
+                <img className="popup__img popup__img_zoom" 
+                    src={card.link}
+                    alt={card.name}/>
+                <h2 className="popup__title popup__title_zoom">{card.name}</h2>
             </div>
-        </section>
-	)
+        </div>
+    )
 }
 
 export default ImagePopup

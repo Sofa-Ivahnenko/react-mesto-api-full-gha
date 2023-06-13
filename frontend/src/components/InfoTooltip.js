@@ -1,11 +1,21 @@
-export default function InfoTooltip({ popupStatus, isOpen, onClose }) {
-	return (
-		<section className={`popup popupInfoTooltip ${isOpen && 'popup_opened'}`}>
-			<figure className="popup__container">
-				<button onClick={onClose} className="popup__close-button" type="button"></button>
-				<img src={popupStatus.image} alt={`Информационное сообщение: ${popupStatus.message}`} className="popup__icon" />
-				<figcaption className="popup__icon-caption">{popupStatus.message}</figcaption>
-			</figure>
-		</section>
-	);
-};
+import InfoTooltipFail from './InfoTooltipFail';
+import InfoTooltipSuccess from './InfoTooltipSuccess';
+
+function InfoTooltip(props) {
+    return (
+        <div 
+            className={`popup ${props.isOpen && 'popup_opened'}`} 
+            onMouseDown={props.onOverlayClose}>
+        <div className="popup__container">
+            <button 
+                className="popup__close" 
+                type="button" 
+                aria-label="закрыть"
+                onClick={props.onButtonClose}/>
+            {props.isTooltipSuccess ? <InfoTooltipSuccess/> : <InfoTooltipFail/>}
+        </div>
+    </div>
+    )
+}
+
+export default InfoTooltip

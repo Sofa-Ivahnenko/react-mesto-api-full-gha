@@ -4,32 +4,32 @@ const validator = require('validator');
 const cardSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
-    minlength: 2,
-    maxlength: 30,
+    required: [true, 'Field "name" should not be empty'],
+    minlength: [2, 'Min length of "name" field - 2'],
+    maxlength: [30, 'Max length of "name" field - 30'],
   },
   link: {
     type: String,
-    required: true,
+    required: [true, 'Field "name" should not be empty'],
     validate: {
-      validator: (url) => validator.isURL(url),
-      message: 'Incorrect URL',
+      validator: (v) => validator.isURL(v),
+      message: 'Некорректный URL',
     },
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
+    required: [true, 'Field "name" should not be empty'],
     ref: 'user',
-    required: true,
   },
   likes: [{
+    default: [],
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
-    default: [],
   }],
-  createdAd: {
+  createdAt: {
     type: Date,
     default: Date.now,
   },
-});
+}, { versionKey: false });
 
 module.exports = mongoose.model('card', cardSchema);

@@ -1,29 +1,34 @@
-import {useEffect} from "react";
-
-function PopupWithForm ({name, title, submitButton, children, isOpen, onClose, onCloseEsc, onCloseOverlay, onSubmit, isLoading, submitBtnLoading, }) {
-
-    useEffect(()=>{
-        if(isOpen) {
-            document.addEventListener('keydown', onCloseEsc);
-            document.addEventListener('mousedown', onCloseOverlay);
-        } else {
-            document.removeEventListener('keydown', onCloseEsc);
-            document.removeEventListener('mousedown', onCloseOverlay);
-        }
-    }, [isOpen])
-    
-    return(
-        <section className={`popup popup${name} ${isOpen ? "popup_opened" : ""}`}>
-            <div className="popup__container">
-                <form className="popup__content" name={name} onSubmit={onSubmit}>
-                    <h2 className="popup__heading">{title}</h2>
-                        {children}
-                    <button type="submit" className="popup__save-button">{isLoading ? submitBtnLoading : submitButton}</button>
-                </form>
-                <button type="button" className="popup__close-button popupEdit__close-button" onClick={onClose}></button>
-            </div>
+function PopupWithForm(props) {
+    const button = props.buttonText || 'Сохранить'
+    return (
+        <section  
+            id="popup-profile" 
+            className={`popup popup_${props.name} ${props.isOpen && 'popup_opened'}`} 
+            onMouseDown={props.onOverlayClose}>
+            <form 
+                onSubmit={props.onSubmit}
+                className={`popup__container popup__container_${props.name}`}>
+                <button 
+                    className={`popup__close popup__close_${props.name}`} 
+                    type="button" 
+                    onClick={props.onButtonClose}
+                    id="popup-close-profile"
+                    aria-label="закрыть"></button>
+                <div 
+                    id="profile-form" 
+                    className={`popup__content popup__content_${props.name}`} 
+                    name={props.name}>
+                    <h2 className="popup__text">{props.title}</h2>
+                    {props.children}
+                    <button
+                        className={`popup__submit popup__submit_${props.name}`} 
+                        type="submit" 
+                        id="profile-submit"
+                        aria-label="отправка">{button}</button>
+                </div>
+            </form>
         </section>
     )
 }
 
-export default PopupWithForm;
+export default PopupWithForm

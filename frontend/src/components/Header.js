@@ -1,20 +1,60 @@
-// import React from "react";
+import logo from '../images/logo.svg';
+import {useEffect, useState, useContext} from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import {CurrentUserContext} from "../contexts/CurrentUserContext";
 
-import logo from '../images/header/logo.svg';
-import { Link } from 'react-router-dom';
+function Header({email, onSignOut}) {
+    const [headerInfo, setHeaderInfo] = useState({});
+    const currentUser = useContext(CurrentUserContext);
+    const location = useLocation();
 
-const Header = ({ title, route, email, onClick }) => {
-	return (
-		<header className="header">
-			<a href="#" className="header__logo">
-				<img src={logo} className="header__image" alt="Логотип" />
-			</a>
-			<div className='header__auth'>
-				<p className='header__text'>{email}</p>
-				<Link to={route} className='header__link' onClick={onClick}>{title}</Link>
-			</div>
-		</header>
-	)
-};
+    const handleLinkClick = () => {
+        if (location.pathname === '/main') {
+            onSignOut();
+        }
+    }
 
-export default Header;
+    useEffect(() => {
+        let headerInfo = {};
+        if (location.pathname === '/main') {
+            headerInfo = {
+                email: currentUser.hasOwnProperty('email') && currentUser.email,
+                link: '/sign-in',
+                linkText: 'Выйти'
+            }
+        } else if (location.pathname === '/sign-up') {
+            headerInfo = {
+                email: '',
+                link: '/sign-in',
+                linkText: 'Войти'
+            }
+        } else if (location.pathname === '/sign-in') {
+            headerInfo = {
+                email: '',
+                link: '/sign-up',
+                linkText: 'Регистрация'
+            }
+        }
+        setHeaderInfo(headerInfo);
+    }, [location])
+
+    return (
+        <header className="header">
+            <div href="/" className="header__link-logo">
+                <img 
+                    src={logo} 
+                    alt="Логотип" 
+                    className="header__logo"/>
+            </div>
+            <div className="header__info">
+                <p className="header__email">{headerInfo.email}</p>
+                <Link 
+                    className="header__link" 
+                    to={headerInfo.link} 
+                    onClick={handleLinkClick}>{headerInfo.linkText}</Link>
+            </div>
+        </header>
+    )
+}
+
+export default Header

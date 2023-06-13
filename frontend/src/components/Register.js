@@ -1,32 +1,37 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
+import * as auth from '../utils/auth.js';
+import Auth from './Auth';
 
-export default function Register({ onRegister }) {
-	const [password, setPassword] = useState('');
-	const [email, setEmail] = useState('');
+const Register = ({handleRegister}) =>  {
+    const navigate = useNavigate();
+    const handleSubmit = (email, password) => {
+        if (!email || !password){
+            return;
+        }
+        return auth.register(email, password)
+            .then(() => {
+                handleRegister(true);
+                navigate('/sign-in', {replace: true});
+            })
+            .catch(err => {
+                handleRegister(false)
+                console.log(err)
+            });
+    }
 
-	const handlePasswordInput = event => {
-		setPassword(event.target.value);
-	};
+    return (
+        <Auth
+            action="#" 
+            onSubmit={handleSubmit}
+            title={'Регистрация'}
+            buttonText={'Зарегестрироваться'}>
+            
+            <div className="auth__option">
+                <p className="auth__option-title">Уже зарегистрированы?&nbsp;</p>
+                <Link to="/sign-in" className="auth__option-link">Войти</Link>
+            </div>
+        </Auth>
+    )
 
-	const handleEmailInput = event => {
-		setEmail(event.target.value);
-	};
-
-	const handleSubmit = event => {
-		event.preventDefault();
-		onRegister(email, password);
-	};
-
-	return (
-		<section className='auth'>
-			<h3 className='auth__title'>Регистрация</h3>
-			<form className='auth__form' onSubmit={handleSubmit}>
-				<input className='auth__input' type='email' placeholder='Email' value={email} onChange={handleEmailInput} required></input>
-				<input className='auth__input' type='password' placeholder='Пароль' value={password} onChange={handlePasswordInput} required></input>
-				<button className='auth__submit-button '>Зарегистрироваться</button>
-			</form>
-			<p className='auth__btn-caption'>Уже зарегистрированы? <Link to="/signin" className='auth__link'>Войти</Link></p>
-		</section>
-	);
-};
+}
+ export default Register

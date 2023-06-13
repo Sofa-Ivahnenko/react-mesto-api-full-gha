@@ -1,42 +1,40 @@
-export const BASE_URL = "https://api.websofa.mesto.nomoredomains.rocks";
+export const baseUrl = 'api.websofa.mesto.nomoredomains.rocks';
 
-function checkResponse(res) {
-  if (res.ok) {
-    return res.json();
-  }
-  return Promise.reject(`Ошибка${res.status}`);
-}
-
-// Запрос для отправки данных на сервере
-// При попытке авторизоваться (для компонента Логин)
-export function authorization(email, password) {
-  return fetch(`${BASE_URL}/signin`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, password }),
-  }).then(checkResponse);
-}
-
-// Запрос для отправки данных на сервере
-// При попытке зарегестрироваться (для компонента Регистер)
-export function registration(email, password) {
-  return fetch(`${BASE_URL}/signup`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, password }),
-  }).then(checkResponse);
-}
-
-// Запрос на получение токена
-export function getToken(token) {
-  return fetch(`${BASE_URL}/users/me`, {
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `Bearer ${token}`
+export const checkRequest = (res) => {
+    if (res.ok) {
+        return res.json();
+    } else {
+        console.log();
+        return Promise.reject(`${res.status} ${res.statusText}`)
     }
-  }).then(checkResponse);
-}
+};
+export const register = (email, password) => {
+    const newUrl = baseUrl + '/signup';
+    return fetch(newUrl, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password })
+    })
+    .then((res) => {return checkRequest(res)})
+};
+export const authorize = (email, password) => {
+    const newUrl = baseUrl + '/signin';
+        return fetch(newUrl, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        })
+        .then((res) => {return checkRequest(res)})
+        .then((data) => {
+            if (data.token){
+                localStorage.setItem('token', data.token);
+                return data;
+            }
+        })
+};
