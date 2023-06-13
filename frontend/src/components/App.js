@@ -127,28 +127,28 @@ useEffect(() => {
 
 
   function handleCardLike(card) {
-	// const isLiked = card.likes.some(userId => userId === currentUser._id);
-	// api.setLike(card._id, !isLiked)
-	// 	.then(data => setCards((
-	// 		state) => state.map(
-	// 		item => item._id === card._id ? data.data : item)))
-	// 	.catch(err => console.log(err));
+	const isLiked = card.likes.some(userId => userId === currentUser._id);
+	api.setLike(card._id, !isLiked)
+		.then(data => setCards((
+			state) => state.map(
+			item => item._id === card._id ? data.data : item)))
+		.catch(err => console.log(err));
 
-		const isLiked = card.likes.some((userId) => userId === currentUser._id);
+		// const isLiked = card.likes.some((userId) => userId === currentUser._id);
 
-		if (!isLiked) {
-			api.setLike(card._id).then((newCard) => {
-				setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
-			}).catch((err) => {
-				console.error(err);
-			});
-		} else {
-			api.deleteLike(card._id).then((newCard) => {
-				setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
-			}).catch((err) => {
-				console.error(err);
-			});
-		}
+		// if (!isLiked) {
+		// 	api.setLike(card._id).then((newCard) => {
+		// 		setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
+		// 	}).catch((err) => {
+		// 		console.error(err);
+		// 	});
+		// } else {
+		// 	api.deleteLike(card._id).then((newCard) => {
+		// 		setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
+		// 	}).catch((err) => {
+		// 		console.error(err);
+		// 	});
+		// }
 	}
 
   function handleUpdateUser(data) {
