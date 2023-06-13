@@ -45,10 +45,12 @@ function App() {
 	function handleLogin(email, password) {
 		signIn(email, password)
 			.then((res) => {
-				localStorage.setItem('jwt', res.token);
+				if(res.token) {
+					setEmailValue(email);
 				setIsLoggedIn(true);
-				setEmailValue(email);
+				localStorage.setItem('jwt', res.token);
 				navigate("/");
+				}
 			})
 			.catch(() => {
 				setPopupStatus({ image: crossImg, message: 'Что-то пошло не так! Попробуйте еще раз.' });
@@ -86,7 +88,7 @@ useEffect(() => {
 			.then((res) => {
 				if (res) {
 					setIsLoggedIn(true);
-					setEmailValue(res.email);
+					setEmailValue(res.data.email);
 					navigate('/');
 				}
 			})
