@@ -127,7 +127,7 @@ useEffect(() => {
 
 
   function handleCardLike(card) {
-		const isLiked = card.likes.some((i) => i._id === currentUser._id);
+		const isLiked = card.likes.some((userId) => userId === currentUser._id);
 
 		if (!isLiked) {
 			api.setLike(card._id).then((newCard) => {
@@ -183,11 +183,10 @@ useEffect(() => {
 
 	function handleCardDelete(card) {
 		api.deleteCard(card._id).then(() => {
-			setCards((items) => items.filter((c) => c._id !== card._id && c));
+			setCards((items) => items.filter((userId) => userId !== card._id && c));
 		}).catch((err) => {
 			console.error(err);
 		});
-		// api.deleteCard(card._id).then(res => console.log(res))
 	}
 
 	function closeAllPopups() {

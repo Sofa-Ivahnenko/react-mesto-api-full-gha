@@ -41,41 +41,37 @@ class Api{
   
     // удаление карточки 
     deleteCard(cardId) {
-      // const token = localStorage.getItem("jwt");
+      const token = localStorage.getItem("jwt");
       return fetch(`${this._baseUrl}/cards/${cardId}`, {
         method: 'DELETE',
-        headers: this._headers,
-        // headers: {
-        //   "Content-Type": "application/json",
-			  //   "Authorization": `Bearer ${token}`
-        // }
+        headers: {
+          "Content-Type": "application/json",
+			    "Authorization": `Bearer ${token}`
+        }
       }).then(res => this._parseResponse(res));
     }
   
     // поставить лайк карточке
     setLike(cardId) {
-      // const token = localStorage.getItem("jwt");
+      const token = localStorage.getItem("jwt");
       return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
         method: 'PUT',
-        headers: this._headers,
-        // headers: {
-        //   "Content-Type": "application/json",
-        //   "Content-Type": "application/json",
-			  //   "Authorization": `Bearer ${token}`
-        // }
+        headers: {
+          "Content-Type": "application/json",
+			    "Authorization": `Bearer ${token}`
+        }
       }).then(res => this._parseResponse(res));
     }  
   
     // удаление лайка
     deleteLike(cardId) {
-      // const token = localStorage.getItem("jwt");
+      const token = localStorage.getItem("jwt");
       return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
         method: 'DELETE',
-        headers: this._headers,
-        // headers: {
-        //   "Content-Type": "application/json",
-			  //   "Authorization": `Bearer ${token}`
-        // }
+        headers: {
+          "Content-Type": "application/json",
+			    "Authorization": `Bearer ${token}`
+        }
       }).then(res => this._parseResponse(res));
     }
   
