@@ -53,12 +53,13 @@ class Api{
   
     // поставить лайк карточке
     setLike(cardId) {
-      const token = localStorage.getItem("jwt");
+      // const token = localStorage.getItem("jwt");
       return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
         method: 'PUT',
         headers: {
           "Content-Type": "application/json",
-			    "Authorization": `Bearer ${token}`
+          // "Content-Type": "application/json",
+			    // "Authorization": `Bearer ${token}`
         }
       }).then(res => this._parseResponse(res));
     }  
