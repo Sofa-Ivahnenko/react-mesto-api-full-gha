@@ -37,3 +37,4 @@ const checkToken = (token) => {
 }
 
 export { signUp, signIn, checkToken };
+
