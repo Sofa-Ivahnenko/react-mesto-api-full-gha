@@ -46,10 +46,14 @@ function App() {
 		signIn(email, password)
 			.then((res) => {
 				if(res.token) {
+					localStorage.setItem('jwt', res.token);
+					setIsLoggedIn(true);
 					setEmailValue(email);
-				setIsLoggedIn(true);
-				localStorage.setItem('jwt', res.token);
-				navigate("/");
+					navigate("/");
+				// 	setEmailValue(email);
+				// setIsLoggedIn(true);
+				// localStorage.setItem('jwt', res.token);
+				// navigate("/");
 				}
 			})
 			.catch(() => {
