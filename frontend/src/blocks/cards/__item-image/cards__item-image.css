@@ -1,0 +1,9 @@
+.cards__item-image {
+  box-sizing: border-box;
+  cursor: pointer;
+  display: block;
+  height: 282px;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
