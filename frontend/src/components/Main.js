@@ -24,9 +24,18 @@ function Main({onEditProfile, onAddPlace, onEditAvatar,onCardLike, onCardClick, 
             <ul className="cards">
               {
                 cards.map((card) => { 
-                  return (
-                  <Card card={card} key={card._id} likes={card.likes} name={card.name} link={card.link} onCardClick={onCardClick} onCardLike={onCardLike} onConfirmCardDelete={onConfirmCardDelete} />
-                )})}
+                  <Card
+                  card={card}
+                  key={card._id}
+                  onCardClick={onCardClick}
+                  onCardLike={onCardLike}
+                  onCardDelete={onCardDelete}
+                />
+                //   return (
+                //   <Card card={card} key={card._id} likes={card.likes} name={card.name} link={card.link} onCardClick={onCardClick} onCardLike={onCardLike} onConfirmCardDelete={onConfirmCardDelete} />
+                // )
+              })
+                }
             </ul>
         </main>
     );
