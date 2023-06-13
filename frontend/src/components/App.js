@@ -131,13 +131,13 @@ useEffect(() => {
 
 		if (!isLiked) {
 			api.setLike(card._id).then((newCard) => {
-				setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
+				setCards((state) => state.map((c) => (c._id === card._id ? newCard.newCard : c)));
 			}).catch((err) => {
 				console.error(err);
 			});
 		} else {
 			api.deleteLike(card._id).then((newCard) => {
-				setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
+				setCards((state) => state.map((c) => (c._id === card._id ? newCard.newCard : c)));
 			}).catch((err) => {
 				console.error(err);
 			});
