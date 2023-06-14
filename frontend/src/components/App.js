@@ -102,7 +102,7 @@ useEffect(() => {
 			setCurrentUser(profileInfo);
 			setCards(card);
 		}).catch((err) => {
-			console.error(err);
+			console.error(err)
 		})
 	}
 }, [isLoggedIn])
