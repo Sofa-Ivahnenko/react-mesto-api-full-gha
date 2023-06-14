@@ -96,16 +96,17 @@ useEffect(() => {
 	}
 }, []);	
 
-useEffect(() => {
-	if (isLoggedIn) {
-		Promise.all([api.getUserInfo(), api.getCardsList()]).then(([profileInfo, card]) =>{
-			setCurrentUser(profileInfo);
-			setCards(card);
-		}).catch((err) => {
-			console.error(err)
-		})
-	}
-}, [isLoggedIn])
+// useEffect(() => {
+// 	if (isLoggedIn) {
+// 		Promise.all([api.getUserInfo(), api.getCardsList()]).then(([profileInfo, card]) =>{
+// 			setCurrentUser(profileInfo);
+// 			setCards(card);
+// 		}).catch((err) => {
+// 			console.error(err)
+// 		})
+// 	}
+// }, [isLoggedIn])
+
 
   const handleEditProfileClick = () => {
     setIsEditProfilePopupOpen(true);
