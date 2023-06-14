@@ -122,7 +122,8 @@ const api = new Api({
     baseUrl: 'api.websofa.mesto.nomoredomains.rocks',
     headers:{
       authorization: `Bearer ${jwtToken}`,
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
     }
   });
 
