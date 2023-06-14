@@ -102,9 +102,10 @@ useEffect(() => {
 		Promise.all([api.getUserInfo(), api.setInitialCards()]).then(([profileInfo, card]) => {
 			setCurrentUser(profileInfo);
 			setCards(card);
-		}).catch((err) => {
-			console.error(err)
-		})
+		}).catch(err => console.log(err))
+		// .catch((err) => {
+		// 	console.error(err)
+		// })
 	}
 }, [isLoggedIn]);
 
