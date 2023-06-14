@@ -13,7 +13,7 @@ class Api{
     }
   
     // получение карточек с сервера
-    setInitialCards(){
+    getCardsList(){
       const token = localStorage.getItem("jwt");
       return fetch(`${this._baseUrl}/cards`, {
         headers: {
