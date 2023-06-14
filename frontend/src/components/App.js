@@ -94,7 +94,18 @@ useEffect(() => {
 				console.error(err);
 			});
 	}
-}, []);	
+}, [navigate]);	
+
+useEffect(() => {
+	if (isLoggedIn) {
+		Promise.all([api.getUserInfo(), api.getCardsList()]).then(([profileInfo, card]) => {
+			setCurrentUser(profileInfo);
+			setCards(card);
+		}).catch((err) => {
+			console.error(err)
+		})
+	}
+}, [isLoggedIn]);
 
 // useEffect(() => {
 // 	if (isLoggedIn) {
