@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const cors = require('cors');
 const router = require('./routes/index');
@@ -33,6 +34,7 @@ app.post('/signup', createUserValidation, createUser);
 app.use(auth);
 app.use(router);
 app.use(errorLogger);
+app.use(cookieParser());
 app.use(errors());
 
 app.use((err, req, res, next) => {
