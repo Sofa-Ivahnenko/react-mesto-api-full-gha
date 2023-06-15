@@ -9,8 +9,7 @@
     "dev": "nodemon app.js"
   },
   "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Sofa-Ivahnenko/express-mesto-gha.git"
+    "type": "git"
   },
   "author": "Sofa Ivahnenko",
   "license": "ISC",
