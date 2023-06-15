@@ -94,18 +94,31 @@ useEffect(() => {
 				console.error(err);
 			});
 	}
-}, []);	
+}, [navigate]);	
 
 useEffect(() => {
 	if (isLoggedIn) {
-		Promise.all([api.getUserInfo(), api.getCardsList()]).then(([profileInfo, card]) =>{
+		Promise.all([api.getUserInfo(), api.getCardsList()]).then(([profileInfo, card]) => {
+			console.log(profileInfo);
 			setCurrentUser(profileInfo);
 			setCards(card);
 		}).catch((err) => {
-			console.error(err)
+			console.error(err);
 		})
 	}
-}, [isLoggedIn])
+}, [isLoggedIn]);
+
+// useEffect(() => {
+// 	if (isLoggedIn) {
+// 		Promise.all([api.getUserInfo(), api.getCardsList()]).then(([profileInfo, card]) =>{
+// 			setCurrentUser(profileInfo);
+// 			setCards(card);
+// 		}).catch((err) => {
+// 			console.error(err)
+// 		})
+// 	}
+// }, [isLoggedIn])
+
 
   const handleEditProfileClick = () => {
     setIsEditProfilePopupOpen(true);
@@ -209,12 +222,12 @@ useEffect(() => {
 		}
 	}
 
-  return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <div className="root">
-          <div className ="page">  
-		  	<Routes>
-			  <Route exact path='/'
+	return (
+		<CurrentUserContext.Provider value={currentUser}>
+			<div className="root">
+				<div className="page">
+					<Routes>
+						<Route exact path='/'
 							element={
 								<>
 									<Header
@@ -237,90 +250,93 @@ useEffect(() => {
 								</>
 							}
 						/>
-				<Route path='/signup'
-					element={
-						<>
-						<Header
-							title='Войти'
-							route='/signin'
+
+						<Route path='/signup'
+							element={
+								<>
+									<Header
+										title='Войти'
+										route='/signin'
+									/>
+									<Register
+										onRegister={handleRegister}
+									/>
+								</>
+							}
 						/>
-						<Register
-							onRegister={handleRegister}
+
+						<Route path='/signin'
+							element={
+								<>
+									<Header
+										title='Регистрация'
+										route='/signup'
+									/>
+									<Login
+										onLogin={handleLogin}
+									/>
+								</>
+							}
 						/>
-						</>
-					}
-				/>
-				<Route path='/signin'
-					element={
-						<>
-						<Header
-							title='Регистрация'
-							route='/signup'
+
+						<Route exact path="*"
+							element={
+								isLoggedIn ? <Navigate to="/" /> : <Navigate to="/signin" />
+							}
 						/>
-						<Login
-							onLogin={handleLogin}
-						/>
-						</>
-					}
-				/>
-				<Route exact path="*"
-					element={
-						isLoggedIn ? <Navigate to="/" /> : <Navigate to="/signin" />
-						}
-				/>
-			</Routes>
+					</Routes>
 
-            <Footer />
+					<Footer />
 
-			<InfoTooltip
-				popupStatus={popupStatus}
-				isOpen={infoTooltip}
-				onClose={closeAllPopups}
-			/>
+					<InfoTooltip
+						popupStatus={popupStatus}
+						isOpen={infoTooltip}
+						onClose={closeAllPopups}
+					/>
 
+					<EditProfilePopup
+						isOpen={isEditProfilePopupOpen}
+						onClose={closeAllPopups}
+						onCloseEsc={closePopupWithEsc}
+						onCloseOverlay={closePopupWithClickOnOverlay}
+						onUpdateUser={handleUpdateUser}
+						isLoading={isLoading}
+					/>
 
-            <EditProfilePopup 
-                isOpen={isEditProfilePopupOpen}
-                onClose={closeAllPopups}
-                onCloseEsc={closePopupWithEsc}
-                onCloseOverlay={closePopupWithClickOnOverlay}
-                onUpdateUser={handleUpdateUser}
-                isLoading={isLoading}
-            />
+					<EditAvatarPopup
+						isOpen={isEditAvatarPopupOpen}
+						onClose={closeAllPopups}
+						onCloseEsc={closePopupWithEsc}
+						onCloseOverlay={closePopupWithClickOnOverlay}
+						onUpdateAvatar={handleUpdateAvatar}
+						isLoading={isLoading}
+					/>
 
-            <EditAvatarPopup
-                isOpen={isEditAvatarPopupOpen}
-                onClose={closeAllPopups}
-                onCloseEsc={closePopupWithEsc}
-                onCloseOverlay={closePopupWithClickOnOverlay}
-                onUpdateAvatar={handleUpdateAvatar}
-                isLoading={isLoading}
-            />
+					<AddPlacePopup
+						isOpen={isAddPlacePopupOpen}
+						onClose={closeAllPopups}
+						onCloseEsc={closePopupWithEsc}
+						onCloseOverlay={closePopupWithClickOnOverlay}
+						onAddPlace={handleAddPlaceSubmit}
+						isLoading={isLoading}
+					/>
 
-            <AddPlacePopup
-                isOpen={isAddPlacePopupOpen}
-                onClose={closeAllPopups}
-                onCloseEsc={closePopupWithEsc}
-                onCloseOverlay={closePopupWithClickOnOverlay}
-                onAddPlace={handleAddPlaceSubmit}
-                isLoading={isLoading}
-            />
+					<ConfirmationPopup
+						card={isConfirmationPopupOpen}
+						onClose={closeAllPopups}
+						name='confirm-deletion'
+						title='Вы уверены?'
+						onCardDelete={handleCardDelete}
+					/>
 
-            <ConfirmationPopup
-                isOpen={isConfirmationPopupOpen}
-                onClose={closeAllPopups}
-                onCloseEsc={closePopupWithEsc}
-                onCloseOverlay={closePopupWithClickOnOverlay}
-                onCardDelete={handleCardDelete}
-                isLoading={isLoading}
-                onSubmit={handleCardDelete}
-                card={removedCardId}
-            />  
-              <ImagePopup card={selectedCard} onClose={closeAllPopups} /> 
-        </div>
-      </div>
-    </CurrentUserContext.Provider>
-  );
+					<ImagePopup
+						card={selectedCard}
+						onClose={closeAllPopups}
+					/>
+				</div>
+			</div>
+		</CurrentUserContext.Provider>
+	);
 }
 
 export default App;
